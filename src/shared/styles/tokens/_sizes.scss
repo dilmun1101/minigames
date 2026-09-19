@@ -1,0 +1,33 @@
+@use './colors' as colors;
+
+$size-05: 4px;
+$size-1: 8px;
+$size-2: 16px;
+$size-3: 24px;
+$size-4: 32px;
+$size-5: 40px;
+$size-6: 48px;
+$size-7: 56px;
+$size-8: 64px;
+$size-9: 72px;
+$size-10: 80px;
+$size-11: 88px;
+$size-12: 96px;
+$size-13: 104px;
+$size-14: 112px;
+$size-15: 120px;
+
+$corner-extra-small: 4px;
+$corner-small: 8px;
+$corner-medium: 12px;
+$corner-large: 16px;
+$corner-extra-large: 24px;
+$corner-full: 9999px;
+$btn-large-padding: 24px 16px;
+$btn-medium-padding: 20px 10px;
+$btn-small-padding: 16px 8px;
+$btn-icon-padding: 8px;
+
+$shadow-level-1: 4px 4px colors.$on-primary;
+$shadow-level-2: 6px 6px colors.$on-primary;
+$shadow-level-3: 8px 8px colors.$on-primary;
