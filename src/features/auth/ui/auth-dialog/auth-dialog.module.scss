@@ -1,0 +1,21 @@
+@use '../../../../shared/styles/tokens/colors' as colors;
+@use '../../../../shared/styles/tokens/sizes' as size;
+@use '../../../../shared/styles/tokens/fonts' as font;
+
+.authDialog {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  display: none;
+  padding: size.$size-3;
+  color: colors.$on-primary;
+  font-size: font.$body-medium;
+  font-weight: font.$bold;
+  background-color: colors.$surface-low;
+  border: size.$border;
+  border-radius: size.$corner-medium;
+}
+
+.open {
+  display: block;
+}

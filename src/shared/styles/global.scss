@@ -1,0 +1,13 @@
+@use './tokens/fonts' as font;
+@use './tokens/colors' as colors;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: font.$Inter;
+  background-color: colors.$bg;
+}

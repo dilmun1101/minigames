@@ -1,0 +1,26 @@
+@use '../../styles/tokens/colors' as colors;
+@use '../../styles/tokens/sizes' as size;
+@use '../../styles/tokens/fonts' as font;
+
+.button {
+  background: transparent;
+  color: colors.$on-primary;
+  border-radius: size.$corner-small;
+  padding: size.$btn-padding;
+  border: size.$border;
+  font-family: inherit;
+  font-weight: font.$bold;
+  font-size: font.$body-small;
+  text-transform: capitalize;
+  line-height: font.$reset-line-height;
+  cursor: pointer;
+  min-height: size.$btn-min-height;
+}
+
+.primary {
+  background-color: colors.$primary;
+}
+
+.additional {
+  background-color: transparent;
+}

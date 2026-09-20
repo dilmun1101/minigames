@@ -1,4 +1,4 @@
-import { HomePage } from '../../pages/home-page/home-page';
+import HomePage from '@/pages/home-page/home-page';
 import { LibraryPage } from '../../pages/library-page/library-page';
 import { ROUTES } from '../../shared/constants/routes';
 

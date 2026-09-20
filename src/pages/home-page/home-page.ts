@@ -1,7 +1,28 @@
-export class HomePage {
-  render() {
-    const p = document.createElement('p');
-    p.innerHTML = `Home page`;
-    return p;
+import Header from '@/widgets/header/header';
+import BaseComponent from '@/shared/lib/base-component/base-component';
+import styles from './home-page.module.scss';
+
+class HomePage extends BaseComponent {
+  constructor() {
+    const header = new Header();
+    const text = new BaseComponent({
+      tag: 'p',
+      text: 'Home page',
+    });
+
+    super(
+      {
+        tag: 'div',
+        className: styles.wrapper,
+      },
+      header,
+      text
+    );
+  }
+
+  public render(): HTMLElement {
+    return this.node;
   }
 }
+
+export default HomePage;
