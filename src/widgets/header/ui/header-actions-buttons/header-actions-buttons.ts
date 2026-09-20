@@ -2,8 +2,12 @@ import BaseComponent from '../../../../shared/lib/base-component/base-component'
 import Button from '../../../../shared/ui/button/button';
 import styles from './header-actions-buttons.module.scss';
 
+interface HeaderActionsButtonsProps {
+  onSignInClick: () => void;
+}
+
 class HeaderActionsButtons extends BaseComponent<HTMLDivElement> {
-  constructor() {
+  constructor({ onSignInClick }: HeaderActionsButtonsProps) {
     const loginButton = new Button({
       text: 'Log in',
       className: styles.loginButton,
@@ -24,6 +28,8 @@ class HeaderActionsButtons extends BaseComponent<HTMLDivElement> {
       loginButton,
       signUpButton
     );
+
+    loginButton.onClick(onSignInClick);
   }
 }
 

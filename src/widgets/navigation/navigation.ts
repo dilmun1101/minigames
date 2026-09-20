@@ -14,19 +14,19 @@ class Navigation extends BaseComponent<HTMLElement> {
     });
 
     const libraryLink = new NavLink({
-      href: ROUTES.LIBRARY,
+      href: ROUTES.HOME,
       text: 'Library',
       className: ROUTES.LIBRARY === currentPath ? styles.linkActive : [],
     });
 
     const tournamentsLink = new NavLink({
-      href: ROUTES.TOURNAMENTS,
+      href: ROUTES.HOME,
       text: 'Tournaments',
       className: ROUTES.TOURNAMENTS === currentPath ? styles.linkActive : [],
     });
 
     const communityLink = new NavLink({
-      href: ROUTES.COMMUNITY,
+      href: ROUTES.HOME,
       text: 'Community',
       className: ROUTES.COMMUNITY === currentPath ? styles.linkActive : [],
     });

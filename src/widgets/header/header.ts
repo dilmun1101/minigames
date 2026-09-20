@@ -4,12 +4,16 @@ import Navigation from '../navigation/navigation';
 import HeaderActionsButtons from './ui/header-actions-buttons/header-actions-buttons';
 import styles from './header.module.scss';
 import BurgerButton from './ui/burger-menu-button/burger-menu-button';
+import AuthDialog from '@/features/auth/ui/auth-dialog/auth-dialog';
 
 class Header extends BaseComponent<HTMLElement> {
   constructor() {
     const logo = new Logo();
     const navigation = new Navigation();
-    const actions = new HeaderActionsButtons();
+    const authDialog = new AuthDialog();
+    const actions = new HeaderActionsButtons({
+      onSignInClick: () => authDialog.toggle(),
+    });
     const burgerButton = new BurgerButton();
 
     const actionsContainer = new BaseComponent(
@@ -36,7 +40,8 @@ class Header extends BaseComponent<HTMLElement> {
         tag: 'header',
         className: styles.header,
       },
-      container
+      container,
+      authDialog
     );
   }
 }
