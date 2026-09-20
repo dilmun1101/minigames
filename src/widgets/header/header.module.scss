@@ -1,0 +1,18 @@
+@use '../../shared/styles/tokens/sizes' as size;
+
+.header {
+  padding: size.$header-paddings;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.actionsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: size.$size-4;
+}

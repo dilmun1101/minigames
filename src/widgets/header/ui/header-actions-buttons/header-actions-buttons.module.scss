@@ -1,0 +1,7 @@
+@use '../../../../shared/styles/tokens/sizes' as s;
+
+.actionsButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: s.$size-2;
+}

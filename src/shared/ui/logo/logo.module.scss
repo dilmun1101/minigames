@@ -1,0 +1,6 @@
+@use '../../styles/tokens/sizes' as size;
+
+.logo {
+  max-width: size.$size-16;
+  max-height: size.$size-4;
+}

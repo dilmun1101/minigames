@@ -1,0 +1,13 @@
+@use '../../shared/styles/tokens/sizes' as s;
+
+.list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: s.$size-5;
+  margin-left: 0;
+}
+
+.item {
+  list-style: none;
+}

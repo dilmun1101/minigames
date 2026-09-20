@@ -16,6 +16,8 @@ $size-12: 96px;
 $size-13: 104px;
 $size-14: 112px;
 $size-15: 120px;
+// size for logo
+$size-16: 172px;
 
 $corner-extra-small: 4px;
 $corner-small: 8px;
@@ -24,10 +26,26 @@ $corner-large: 16px;
 $corner-extra-large: 24px;
 $corner-full: 9999px;
 $btn-large-padding: 24px 16px;
-$btn-medium-padding: 20px 10px;
+// $btn-medium-padding: 20px 10px; change top, bottom and sides ↓
+$btn-medium-padding: 10px 20px;
 $btn-small-padding: 16px 8px;
 $btn-icon-padding: 8px;
 
 $shadow-level-1: 4px 4px colors.$on-primary;
 $shadow-level-2: 6px 6px colors.$on-primary;
 $shadow-level-3: 8px 8px colors.$on-primary;
+
+// border for buttons
+$border: 2px solid colors.$on-primary;
+// padding for buttons
+$btn-padding: 0 18px;
+// min-height for button. Prevent button stick
+$btn-min-height: 37px;
+
+// breakpoints
+$breakpoint-large: 1920px;
+$breakpoint-middle: 768px;
+$breakpoint-small: 375px;
+
+// paddings for header
+$header-paddings: 25px 80px;

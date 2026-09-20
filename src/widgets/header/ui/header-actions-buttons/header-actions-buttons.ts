@@ -7,11 +7,13 @@ class HeaderActionsButtons extends BaseComponent<HTMLDivElement> {
     const loginButton = new Button({
       text: 'Log in',
       className: styles.loginButton,
+      variant: 'additional',
     });
 
     const signUpButton = new Button({
       text: 'Sign up',
       className: styles.signButton,
+      variant: 'primary',
     });
 
     super(
