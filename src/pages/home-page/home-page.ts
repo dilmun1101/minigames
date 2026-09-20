@@ -1,12 +1,12 @@
-import Navigation from '../../widgets/navigation/navigation';
+import Header from '../../widgets/header/header';
 
 export class HomePage {
   render() {
     const page = document.createElement('div');
-    const navigation = new Navigation();
+    const header = new Header();
     const p = document.createElement('p');
     p.innerHTML = `Home page`;
-    page.append(navigation.node, p);
+    page.append(header.node, p);
     return page;
   }
 }
