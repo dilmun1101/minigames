@@ -5,24 +5,30 @@ import styles from './navigation.module.scss';
 
 class Navigation extends BaseComponent<HTMLElement> {
   constructor() {
+    const currentPath = window.location.pathname;
+
     const homeLink = new NavLink({
       href: ROUTES.HOME,
       text: 'Home',
+      className: ROUTES.HOME === currentPath ? styles.linkActive : [],
     });
 
     const libraryLink = new NavLink({
       href: ROUTES.LIBRARY,
       text: 'Library',
+      className: ROUTES.LIBRARY === currentPath ? styles.linkActive : [],
     });
 
     const tournamentsLink = new NavLink({
       href: ROUTES.TOURNAMENTS,
       text: 'Tournaments',
+      className: ROUTES.TOURNAMENTS === currentPath ? styles.linkActive : [],
     });
 
     const communityLink = new NavLink({
       href: ROUTES.COMMUNITY,
       text: 'Community',
+      className: ROUTES.COMMUNITY === currentPath ? styles.linkActive : [],
     });
 
     const list = new BaseComponent<HTMLUListElement>({

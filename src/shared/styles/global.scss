@@ -1,4 +1,5 @@
 @use './tokens/fonts' as font;
+@use './tokens/colors' as colors;
 
 * {
   margin: 0;
@@ -8,4 +9,5 @@
 
 body {
   font-family: font.$Inter;
+  background-color: colors.$bg;
 }

@@ -1,7 +1,26 @@
-@use '../../../../shared/styles/tokens/sizes' as s;
+@use '../../../../shared/styles/tokens/sizes' as size;
 
 .actionsButtons {
   display: flex;
   flex-wrap: wrap;
-  gap: s.$size-2;
+  gap: size.$size-2;
+}
+
+@media (max-width: size.$breakpoint-middle) {
+  .actionsButtons {
+    .loginButton {
+      display: none;
+    }
+
+    .signButton {
+      min-height: size.$btn-min-height-middle;
+      padding: size.$btn-padding-middle;
+    }
+  }
+}
+
+@media (max-width: size.$breakpoint-small) {
+  .actionsButtons {
+    display: none;
+  }
 }

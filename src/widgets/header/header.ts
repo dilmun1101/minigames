@@ -3,12 +3,14 @@ import Logo from '../../shared/ui/logo/logo';
 import Navigation from '../navigation/navigation';
 import HeaderActionsButtons from './ui/header-actions-buttons/header-actions-buttons';
 import styles from './header.module.scss';
+import BurgerButton from './ui/burger-menu-button/burger-menu-button';
 
 class Header extends BaseComponent<HTMLElement> {
   constructor() {
     const logo = new Logo();
     const navigation = new Navigation();
     const actions = new HeaderActionsButtons();
+    const burgerButton = new BurgerButton();
 
     const actionsContainer = new BaseComponent(
       {
@@ -16,7 +18,8 @@ class Header extends BaseComponent<HTMLElement> {
         className: styles.actionsContainer,
       },
       navigation,
-      actions
+      actions,
+      burgerButton
     );
 
     const container = new BaseComponent(
