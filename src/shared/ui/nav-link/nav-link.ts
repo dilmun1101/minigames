@@ -9,10 +9,14 @@ type NavLinkProps = {
 
 class NavLink extends BaseComponent<HTMLAnchorElement> {
   constructor({ href, text, className = [] }: NavLinkProps) {
+    const additionalClasses = Array.isArray(className)
+      ? className
+      : [className];
+
     super({
       tag: 'a',
       text,
-      className: [styles.navLink, ...className],
+      className: [styles.navLink, ...additionalClasses],
       attributes: {
         href,
       },
