@@ -1,0 +1,40 @@
+@use '../../../../shared/styles/tokens/colors' as colors;
+@use '../../../../shared/styles/tokens/sizes' as sizes;
+
+.burgerButton {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: sizes.$border-width;
+  width: sizes.$size-4;
+  aspect-ratio: 1/1;
+  padding: 0;
+  background-color: colors.$white;
+  border: sizes.$border;
+  border-radius: sizes.$corner-small;
+  cursor: pointer;
+  transition: background-color sizes.$transition;
+
+  &:hover {
+    background-color: colors.$surface;
+  }
+}
+
+.line {
+  width: sizes.$burger-line-width;
+  height: sizes.$border-width;
+  background-color: colors.$on-primary;
+}
+
+@media (max-width: sizes.$breakpoint-menu) {
+  .burgerButton {
+    display: flex;
+  }
+}
+
+@media (max-width: sizes.$breakpoint-small) {
+  .line {
+    width: sizes.$burger-line-width-small;
+  }
+}
