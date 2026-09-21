@@ -1,0 +1,22 @@
+@use '../../shared/styles/tokens/colors' as colors;
+@use '../../shared/styles/tokens/sizes' as size;
+
+.hero {
+  padding: size.$size-14 size.$size-15;
+  background-image: url('/images/hero.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+@media (max-width: size.$breakpoint-middle) {
+  .hero {
+    padding: size.$size-9 size.$size-5;
+  }
+}
+
+@media (max-width: size.$breakpoint-small) {
+  .hero {
+    padding: size.$size-8 size.$size-2;
+  }
+}
