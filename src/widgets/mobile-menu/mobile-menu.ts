@@ -143,6 +143,12 @@ class MobileMenu extends BaseComponent<HTMLDivElement> {
     closeButton.node.addEventListener('click', () => this.close());
     loginButton.onClick(onAuthButtonClick);
     signUpButton.onClick(onAuthButtonClick);
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        this.close();
+      }
+    });
   }
 
   public open(): void {

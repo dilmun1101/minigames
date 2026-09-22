@@ -5,6 +5,7 @@
 // add tokens for mobile menu
 $menu-transition: 0.5s;
 $link-line-height: 22px;
+$border-width: 1px;
 
 .mobileMenu {
   position: fixed;
@@ -44,6 +45,7 @@ $link-line-height: 22px;
   display: flex;
   flex-direction: column;
   gap: size.$size-3;
+  width: fit-content;
 
   .link {
     display: block;
@@ -52,9 +54,11 @@ $link-line-height: 22px;
     font-weight: font.$medium;
     line-height: $link-line-height;
     transition: $menu-transition;
+    border-bottom: $border-width solid transparent;
 
     &:hover {
       color: colors.$primary;
+      border-color: colors.$primary;
     }
   }
 
@@ -83,6 +87,11 @@ $link-line-height: 22px;
   .loginButton {
     color: colors.$white;
     border-color: colors.$white;
+
+    &:hover {
+      border-color: colors.$primary;
+      background-color: transparent;
+    }
   }
 }
 
