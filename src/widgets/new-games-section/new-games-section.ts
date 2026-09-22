@@ -5,6 +5,14 @@ import styles from './new-games-section.module.scss';
 import GameCard from '../game-card/game-card';
 import { NEW_GAMES } from '../game-card/model/games';
 
+const SLIDE_CLASSES = [
+  styles.slideSmall,
+  styles.slideMedium,
+  styles.slideLarge,
+  styles.slideMedium,
+  styles.slideSmall,
+];
+
 class NewGamesSection extends BaseComponent<HTMLElement> {
   constructor() {
     const title = new SectionTitle({
@@ -38,9 +46,31 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
       controls
     );
 
-    const gameCard = new GameCard({
-      game: NEW_GAMES[1],
-    });
+    const slides = [];
+
+    for (let i = 0; i < NEW_GAMES.length; i++) {
+      const card = new GameCard({
+        game: NEW_GAMES[i],
+      });
+
+      const slide = new BaseComponent(
+        {
+          tag: 'li',
+          className: [styles.slide, SLIDE_CLASSES[i]],
+        },
+        card
+      );
+
+      slides.push(slide);
+    }
+
+    const track = new BaseComponent(
+      {
+        tag: 'ul',
+        className: styles.track,
+      },
+      ...slides
+    );
 
     super(
       {
@@ -48,7 +78,7 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
         className: styles.newGames,
       },
       header,
-      gameCard
+      track
     );
   }
 }
