@@ -3,8 +3,12 @@ import styles from './burger-menu-button.module.scss';
 
 const LINES_COUNT = 3;
 
+interface BurgerButtonProps {
+  onClick: () => void;
+}
+
 class BurgerButton extends BaseComponent {
-  constructor() {
+  constructor({ onClick }: BurgerButtonProps) {
     const lines = [];
 
     for (let i = 0; i < LINES_COUNT; i++) {
@@ -25,6 +29,8 @@ class BurgerButton extends BaseComponent {
       },
       ...lines
     );
+
+    this.node.addEventListener('click', onClick);
   }
 }
 

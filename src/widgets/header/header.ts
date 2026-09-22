@@ -15,8 +15,15 @@ class Header extends BaseComponent<HTMLElement> {
     const actions = new HeaderActionsButtons({
       onSignInClick: () => authDialog.toggle(),
     });
-    const burgerButton = new BurgerButton();
-    const mobileMenu = new MobileMenu();
+    const burgerButton = new BurgerButton({
+      onClick: () => mobileMenu.open(),
+    });
+    const mobileMenu = new MobileMenu({
+      onAuthButtonClick: () => {
+        mobileMenu.close();
+        authDialog.open();
+      },
+    });
 
     const actionsContainer = new BaseComponent(
       {

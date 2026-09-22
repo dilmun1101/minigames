@@ -1,20 +1,19 @@
 import BaseComponent from '@/shared/lib/base-component/base-component';
 import Logo from '@/shared/ui/logo/logo';
 import NavLink from '@/shared/ui/nav-link/nav-link';
-import HeaderActionsButtons from '../header/ui/header-actions-buttons/header-actions-buttons';
 import { ROUTES } from '@/shared/constants/routes';
 import CloseButton from './ui/close-button/close-button';
-import AuthDialog from '@/features/auth/ui/auth-dialog/auth-dialog';
 import styles from './mobile-menu.module.scss';
+import Button from '@/shared/ui/button/button';
+
+interface MobileMenuProps {
+  onAuthButtonClick: () => void;
+}
 
 class MobileMenu extends BaseComponent<HTMLDivElement> {
-  constructor() {
+  constructor({ onAuthButtonClick }: MobileMenuProps) {
     const logo = new Logo();
     const closeButton = new CloseButton();
-    const authDialog = new AuthDialog();
-    const actionsButtons = new HeaderActionsButtons({
-      onSignInClick: () => authDialog.toggle(),
-    });
 
     const menuHeader = new BaseComponent<HTMLDivElement>(
       {
@@ -30,25 +29,37 @@ class MobileMenu extends BaseComponent<HTMLDivElement> {
     const homeLink = new NavLink({
       href: ROUTES.HOME,
       text: 'Home',
-      className: ROUTES.HOME === currentPath ? styles.linkActive : [],
+      className:
+        ROUTES.HOME === currentPath
+          ? [styles.link, styles.linkActive]
+          : styles.link,
     });
 
     const libraryLink = new NavLink({
       href: ROUTES.HOME,
       text: 'Library',
-      className: ROUTES.LIBRARY === currentPath ? styles.linkActive : [],
+      className:
+        ROUTES.LIBRARY === currentPath
+          ? [styles.link, styles.linkActive]
+          : styles.link,
     });
 
     const tournamentsLink = new NavLink({
       href: ROUTES.HOME,
       text: 'Tournaments',
-      className: ROUTES.TOURNAMENTS === currentPath ? styles.linkActive : [],
+      className:
+        ROUTES.TOURNAMENTS === currentPath
+          ? [styles.link, styles.linkActive]
+          : styles.link,
     });
 
     const communityLink = new NavLink({
       href: ROUTES.HOME,
       text: 'Community',
-      className: ROUTES.COMMUNITY === currentPath ? styles.linkActive : [],
+      className:
+        ROUTES.COMMUNITY === currentPath
+          ? [styles.link, styles.linkActive]
+          : styles.link,
     });
 
     const list = new BaseComponent<HTMLUListElement>({
@@ -98,6 +109,27 @@ class MobileMenu extends BaseComponent<HTMLDivElement> {
       list
     );
 
+    const loginButton = new Button({
+      text: 'Log in',
+      className: styles.loginButton,
+      variant: 'additional',
+    });
+
+    const signUpButton = new Button({
+      text: 'Sign up',
+      className: styles.signButton,
+      variant: 'primary',
+    });
+
+    const actionsButtons = new BaseComponent(
+      {
+        tag: 'div',
+        className: styles.actions,
+      },
+      loginButton,
+      signUpButton
+    );
+
     super(
       {
         tag: 'div',
@@ -107,6 +139,18 @@ class MobileMenu extends BaseComponent<HTMLDivElement> {
       nav,
       actionsButtons
     );
+
+    closeButton.node.addEventListener('click', () => this.close());
+    loginButton.onClick(onAuthButtonClick);
+    signUpButton.onClick(onAuthButtonClick);
+  }
+
+  public open(): void {
+    this.addClass(styles.open);
+  }
+
+  public close(): void {
+    this.removeClass(styles.open);
   }
 }
 
