@@ -11,6 +11,7 @@ $overlay-gradient: linear-gradient(
   rgba(colors.$black, $overlay-shade),
   transparent
 );
+$z-index: 10;
 
 .card {
   container-type: inline-size;
@@ -26,6 +27,16 @@ $overlay-gradient: linear-gradient(
   border: size.$border;
   border-radius: size.$corner-extra-large;
   box-shadow: size.$shadow-level-1;
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 40%;
+    background: $overlay-gradient;
+  }
 }
 
 .image {
@@ -44,7 +55,7 @@ $overlay-gradient: linear-gradient(
   flex-direction: column;
   gap: size.$size-1;
   padding: size.$size-4 $overlay-padding $overlay-padding;
-  background: $overlay-gradient;
+  z-index: $z-index;
 }
 
 .title {

@@ -9,10 +9,6 @@ class HomePage extends BaseComponent {
     const header = new Header();
     const heroSection = new HeroSection();
     const newGamesSection = new NewGamesSection();
-    // const text = new BaseComponent({
-    //   tag: 'p',
-    //   text: 'Could you please check my work on Wednesday? ༼ つ ◕_◕ ༽つ',
-    // });
 
     super(
       {
@@ -20,7 +16,6 @@ class HomePage extends BaseComponent {
         className: styles.wrapper,
       },
       header,
-      // text,
       heroSection,
       newGamesSection
     );
