@@ -2,6 +2,8 @@ import BaseComponent from '@/shared/lib/base-component/base-component';
 import SectionTitle from '@/shared/ui/section-title/section-title';
 import SliderButton from './ui/slider-button/slider-button';
 import styles from './new-games-section.module.scss';
+import GameCard from '../game-card/game-card';
+import { NEW_GAMES } from '../game-card/model/games';
 
 class NewGamesSection extends BaseComponent<HTMLElement> {
   constructor() {
@@ -36,12 +38,17 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
       controls
     );
 
+    const gameCard = new GameCard({
+      game: NEW_GAMES[1],
+    });
+
     super(
       {
         tag: 'section',
         className: styles.newGames,
       },
-      header
+      header,
+      gameCard
     );
   }
 }
