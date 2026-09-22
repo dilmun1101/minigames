@@ -5,6 +5,7 @@ import HeaderActionsButtons from './ui/header-actions-buttons/header-actions-but
 import styles from './header.module.scss';
 import BurgerButton from './ui/burger-menu-button/burger-menu-button';
 import AuthDialog from '@/features/auth/ui/auth-dialog/auth-dialog';
+import MobileMenu from '../mobile-menu/mobile-menu';
 
 class Header extends BaseComponent<HTMLElement> {
   constructor() {
@@ -15,6 +16,7 @@ class Header extends BaseComponent<HTMLElement> {
       onSignInClick: () => authDialog.toggle(),
     });
     const burgerButton = new BurgerButton();
+    const mobileMenu = new MobileMenu();
 
     const actionsContainer = new BaseComponent(
       {
@@ -41,7 +43,8 @@ class Header extends BaseComponent<HTMLElement> {
         className: styles.header,
       },
       container,
-      authDialog
+      authDialog,
+      mobileMenu
     );
   }
 }
