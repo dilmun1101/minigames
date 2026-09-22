@@ -1,0 +1,33 @@
+@use '../../styles/tokens/colors' as colors;
+@use '../../styles/tokens/sizes' as size;
+@use '../../styles/tokens/fonts' as font;
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: size.$size-1;
+  color: colors.$on-primary;
+  font-size: font.$headline-large;
+  font-weight: font.$bold;
+  line-height: normal;
+
+  &::before {
+    content: '';
+    flex-shrink: 0;
+    width: size.$size-1;
+    height: size.$size-4;
+    background-color: colors.$primary;
+    border: size.$border;
+    border-radius: size.$corner-full;
+  }
+}
+
+@media (max-width: size.$breakpoint-middle) {
+  .sectionTitle {
+    font-size: font.$headline-medium;
+
+    &::before {
+      height: size.$size-3;
+    }
+  }
+}
