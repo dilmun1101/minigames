@@ -3,12 +3,14 @@ import BaseComponent from '@/shared/lib/base-component/base-component';
 import styles from './home-page.module.scss';
 import HeroSection from '@/widgets/hero-section/hero-section';
 import NewGamesSection from '@/widgets/new-games-section/new-games-section';
+import LeaderboardTable from '@/widgets/leaderboard-table/leaderboard-table';
 
 class HomePage extends BaseComponent {
   constructor() {
     const header = new Header();
     const heroSection = new HeroSection();
     const newGamesSection = new NewGamesSection();
+    const leaderboardTable = new LeaderboardTable();
 
     super(
       {
@@ -17,7 +19,8 @@ class HomePage extends BaseComponent {
       },
       header,
       heroSection,
-      newGamesSection
+      newGamesSection,
+      leaderboardTable
     );
   }
 
