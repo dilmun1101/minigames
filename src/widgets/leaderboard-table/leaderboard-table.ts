@@ -1,5 +1,10 @@
 import BaseComponent from '@/shared/lib/base-component/base-component';
+import Avatar from '@/shared/ui/avatar/avatar';
+import Label from '@/shared/ui/label/label';
+import { TOP_PLAYERS } from './model/players';
 import styles from './leaderboard-table.module.scss';
+
+const FIRE = '🔥';
 
 class LeaderboardTable extends BaseComponent<HTMLDivElement> {
   constructor() {
@@ -72,10 +77,113 @@ class LeaderboardTable extends BaseComponent<HTMLDivElement> {
       headRow
     );
 
-    const tableBody = new BaseComponent({
-      tag: 'tbody',
-      className: styles.body,
+    const player = TOP_PLAYERS[0];
+
+    const rankCell = new BaseComponent({
+      tag: 'td',
+      className: [styles.cell, styles.rankCell, styles.rankFirst],
+      text: `#${player.rank}`,
     });
+
+    const avatar = new Avatar({
+      name: player.name,
+      colorAvatar: player.rank,
+    });
+
+    const playerName = new BaseComponent({
+      tag: 'span',
+      className: styles.playerName,
+      text: player.name,
+    });
+
+    const playerInfo = new BaseComponent(
+      {
+        tag: 'div',
+        className: styles.player,
+      },
+      avatar,
+      playerName
+    );
+
+    const playerCell = new BaseComponent(
+      {
+        tag: 'td',
+        className: [styles.cell, styles.playerCell],
+      },
+      playerInfo
+    );
+
+    const gamesCell = new BaseComponent({
+      tag: 'td',
+      className: [styles.cell, styles.gamesCell],
+      text: String(player.gamesPlayed),
+    });
+
+    const fullScore = new BaseComponent({
+      tag: 'span',
+      className: styles.fullScore,
+      text: String(player.totalScore),
+    });
+
+    const shortScore = new BaseComponent({
+      tag: 'span',
+      className: styles.shortScore,
+      text: String(player.totalScore),
+    });
+
+    const scoreCell = new BaseComponent(
+      {
+        tag: 'td',
+        className: [styles.cell, styles.scoreCell],
+      },
+      fullScore,
+      shortScore
+    );
+
+    const streakCell = new BaseComponent(
+      {
+        tag: 'td',
+        className: [styles.cell, styles.streakCell],
+      },
+      new BaseComponent({
+        tag: 'span',
+        className: styles.fullText,
+        text: `${FIRE} ${player.streakDays} days`,
+      })
+    );
+
+    const favoriteLabel = new Label({
+      text: player.favoriteGame,
+    });
+
+    const favoriteCell = new BaseComponent(
+      {
+        tag: 'td',
+        className: [styles.cell, styles.favoriteCell],
+      },
+      favoriteLabel
+    );
+
+    const row = new BaseComponent(
+      {
+        tag: 'tr',
+        className: styles.row,
+      },
+      rankCell,
+      playerCell,
+      gamesCell,
+      scoreCell,
+      streakCell,
+      favoriteCell
+    );
+
+    const tableBody = new BaseComponent(
+      {
+        tag: 'tbody',
+        className: styles.body,
+      },
+      row
+    );
 
     const table = new BaseComponent(
       {
