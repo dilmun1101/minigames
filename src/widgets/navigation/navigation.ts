@@ -14,7 +14,7 @@ class Navigation extends BaseComponent<HTMLElement> {
     });
 
     const libraryLink = new NavLink({
-      href: ROUTES.HOME,
+      href: ROUTES.LIBRARY,
       text: 'Library',
       className: ROUTES.LIBRARY === currentPath ? styles.linkActive : [],
     });
