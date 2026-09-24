@@ -1,0 +1,40 @@
+@use '@/shared/styles/tokens/colors' as colors;
+@use '@/shared/styles/tokens/sizes' as size;
+
+// add token for close button
+$line-angle: 45deg;
+
+.closeButton {
+  position: relative;
+  flex-shrink: 0;
+  width: size.$size-4;
+  aspect-ratio: 1/1;
+  padding: 0;
+  background-color: colors.$bg-footer-low;
+  border: size.$border-width solid transparent;
+  border-radius: size.$corner-small;
+  cursor: pointer;
+  transition: size.$transition;
+
+  &:hover {
+    background-color: colors.$bg-footer-lowest;
+    border-color: colors.$primary;
+  }
+}
+
+.line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: size.$burger-line-width-small;
+  height: size.$border-width;
+  background-color: colors.$white;
+
+  &:first-child {
+    transform: translate(-50%, -50%) rotate($line-angle);
+  }
+
+  &:last-child {
+    transform: translate(-50%, -50%) rotate(-$line-angle);
+  }
+}

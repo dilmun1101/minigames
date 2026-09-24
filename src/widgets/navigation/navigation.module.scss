@@ -1,0 +1,26 @@
+@use '../../shared/styles/tokens/colors' as colors;
+@use '../../shared/styles/tokens/sizes' as size;
+@use '../../shared/styles/tokens/fonts' as font;
+
+.list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: size.$size-4;
+  margin-left: 0;
+
+  .linkActive {
+    color: colors.$on-primary;
+    font-weight: font.$bold;
+  }
+}
+
+.item {
+  list-style: none;
+}
+
+@media (max-width: size.$breakpoint-menu) {
+  .navigation {
+    display: none;
+  }
+}

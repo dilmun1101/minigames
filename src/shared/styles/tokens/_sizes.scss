@@ -1,0 +1,69 @@
+@use './colors' as colors;
+
+$size-05: 4px;
+$size-1: 8px;
+$size-2: 16px;
+$size-3: 24px;
+$size-4: 32px;
+$size-5: 40px;
+$size-6: 48px;
+$size-7: 56px;
+$size-8: 64px;
+$size-9: 72px;
+$size-10: 80px;
+$size-11: 88px;
+$size-12: 96px;
+$size-13: 104px;
+$size-14: 112px;
+$size-15: 120px;
+// size for logo
+$size-16: 172px;
+$size-17: 20px;
+
+$corner-extra-small: 4px;
+$corner-small: 8px;
+$corner-medium: 12px;
+$corner-large: 16px;
+$corner-extra-large: 24px;
+$corner-full: 9999px;
+$btn-large-padding: 24px 16px;
+// $btn-medium-padding: 20px 10px; change top, bottom and sides ↓
+$btn-medium-padding: 10px 20px;
+$btn-small-padding: 16px 8px;
+$btn-icon-padding: 8px;
+
+$shadow-level-1: 4px 4px colors.$on-primary;
+$shadow-level-2: 6px 6px colors.$on-primary;
+$shadow-level-3: 8px 8px colors.$on-primary;
+
+// width of the border and of the burger lines
+$border-width: 2px;
+// border for buttons
+$border: $border-width solid colors.$on-primary;
+// padding for buttons
+$btn-padding: 0 18px;
+// min-height for button. Prevent button stick
+$btn-min-height: 37px;
+// min-height and padding for the header button on tablet
+$btn-min-height-middle: $size-4;
+$btn-padding-middle: 0 14px;
+
+// breakpoints
+$breakpoint-large: 1920px;
+$breakpoint-middle: 768px;
+$breakpoint-small: 375px;
+// breakpoint where navigation turns into the burger button
+$breakpoint-menu: 972px;
+
+// paddings for header
+$header-paddings: $size-3 $size-10 ($size-3 - $border-width);
+$header-paddings-middle: $size-17 $size-5 ($size-17 - $border-width);
+$header-paddings-small: $size-2 $size-2 ($size-2 - $border-width);
+
+// burger button
+$burger-line-width: $size-2;
+// width of the burger lines on the smallest screens
+$burger-line-width-small: 14px;
+
+// transition for interactive elements
+$transition: 1s;

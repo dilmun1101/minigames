@@ -1,0 +1,38 @@
+@use '../../styles/tokens/colors' as colors;
+@use '../../styles/tokens/sizes' as size;
+@use '../../styles/tokens/fonts' as font;
+
+// add token for button hover
+$transition: 0.5s;
+
+.button {
+  background: transparent;
+  color: colors.$on-primary;
+  border-radius: size.$corner-small;
+  padding: size.$btn-padding;
+  border: size.$border;
+  font-family: inherit;
+  font-weight: font.$bold;
+  font-size: font.$body-small;
+  text-transform: capitalize;
+  line-height: font.$reset-line-height;
+  cursor: pointer;
+  min-height: size.$btn-min-height;
+  transition: $transition;
+}
+
+.primary {
+  background-color: colors.$primary;
+
+  &:hover {
+    background-color: colors.$primary-high;
+  }
+}
+
+.additional {
+  background-color: transparent;
+
+  &:hover {
+    background-color: colors.$surface;
+  }
+}

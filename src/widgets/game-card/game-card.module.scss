@@ -1,0 +1,96 @@
+@use '@/shared/styles/tokens/colors' as colors;
+@use '@/shared/styles/tokens/sizes' as size;
+@use '@/shared/styles/tokens/fonts' as font;
+
+// add tokens for card
+$card-info-min-width: 288px;
+$overlay-padding: size.$size-2 - size.$border-width;
+$overlay-shade: 0.85;
+$overlay-gradient: linear-gradient(
+  to top,
+  rgba(colors.$black, $overlay-shade),
+  transparent
+);
+$z-index: 10;
+
+.card {
+  container-type: inline-size;
+  width: 100%;
+  height: 100%;
+}
+
+.frame {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background-color: colors.$bg-footer;
+  border: size.$border;
+  border-radius: size.$corner-extra-large;
+  box-shadow: size.$shadow-level-1;
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 40%;
+    background: $overlay-gradient;
+  }
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: none;
+  flex-direction: column;
+  gap: size.$size-1;
+  padding: size.$size-4 $overlay-padding $overlay-padding;
+  z-index: $z-index;
+}
+
+.title {
+  overflow: hidden;
+  color: colors.$white;
+  font-size: font.$body-large;
+  font-weight: font.$bold;
+  white-space: nowrap;
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: size.$size-05;
+  color: colors.$white;
+  font-size: font.$body-small;
+  font-weight: font.$bold;
+}
+
+.star {
+  color: colors.$primary;
+}
+
+.heart {
+  color: colors.$like;
+}
+
+@container (min-width: #{$card-info-min-width}) {
+  .overlay {
+    display: flex;
+  }
+}

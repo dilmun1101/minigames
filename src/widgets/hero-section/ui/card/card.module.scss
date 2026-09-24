@@ -1,0 +1,122 @@
+@use '@/shared/styles/tokens/colors' as colors;
+@use '@/shared/styles/tokens/sizes' as size;
+@use '@/shared/styles/tokens/fonts' as font;
+
+// add tokens for card
+$card-width-large: 640px;
+$card-width-middle: 480px;
+$card-border-width-large: 3px;
+$card-padding-large: size.$size-6 - $card-border-width-large;
+$card-padding-small: size.$size-3 - size.$border-width;
+$card-gap-small: 15px;
+
+$title-line-height-large: 62px;
+$title-line-height-middle: 41px;
+$title-line-height-small: 29px;
+
+$description-line-height-large: 27px;
+$description-line-height-middle: 20px;
+$description-line-height-small: 18px;
+
+$button-padding-large: 0 22px;
+$button-min-height-large: 54px;
+$button-min-height-small: 31px;
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: size.$size-3;
+  width: 100%;
+  max-width: $card-width-large;
+  padding: $card-padding-large;
+  background-color: colors.$bg;
+  border: $card-border-width-large solid colors.$on-primary;
+  border-radius: size.$corner-extra-large;
+  box-shadow: size.$shadow-level-3;
+}
+
+.title {
+  color: colors.$on-primary;
+  font-size: font.$display-large;
+  font-weight: font.$bold;
+  line-height: $title-line-height-large;
+}
+
+.description {
+  color: colors.$on-bg;
+  font-size: font.$body-large;
+  font-weight: font.$medium;
+  line-height: $description-line-height-large;
+}
+
+.shortDescription {
+  display: none;
+  color: colors.$on-bg;
+  font-size: font.$body-large;
+  font-weight: font.$medium;
+  line-height: $description-line-height-large;
+}
+
+.button {
+  align-self: flex-start;
+  padding: $button-padding-large;
+  font-size: font.$body-large;
+  min-height: $button-min-height-large;
+}
+
+@media (max-width: size.$breakpoint-middle) {
+  .card {
+    gap: size.$size-2;
+    max-width: $card-width-middle;
+    padding: $card-padding-small;
+    border: size.$border;
+    border-radius: size.$corner-large;
+    box-shadow: size.$shadow-level-2;
+  }
+
+  .title {
+    font-size: font.$display-medium;
+    line-height: $title-line-height-middle;
+  }
+
+  .description,
+  .shortDescription {
+    font-size: font.$body-small;
+    line-height: $description-line-height-middle;
+  }
+
+  .button {
+    padding: size.$btn-padding;
+    font-size: font.$body-small;
+    min-height: size.$btn-min-height;
+  }
+}
+
+@media (max-width: size.$breakpoint-small) {
+  .card {
+    gap: $card-gap-small;
+    border-radius: size.$corner-medium;
+    box-shadow: size.$shadow-level-1;
+  }
+
+  .title {
+    font-size: font.$display-small;
+    line-height: $title-line-height-small;
+  }
+
+  .description {
+    display: none;
+  }
+
+  .shortDescription {
+    display: block;
+    font-size: font.$label-medium;
+    line-height: $description-line-height-small;
+  }
+
+  .button {
+    padding: size.$btn-padding-middle;
+    font-size: font.$label-medium;
+    min-height: $button-min-height-small;
+  }
+}

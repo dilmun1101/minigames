@@ -1,0 +1,53 @@
+@use '@/shared/styles/tokens/colors' as colors;
+@use '@/shared/styles/tokens/sizes' as size;
+
+// add tokens for slider button
+$icon-size-small: 18px;
+
+.sliderButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: size.$size-6;
+  aspect-ratio: 1/1;
+  padding: 0;
+  color: colors.$on-primary;
+  border: size.$border;
+  border-radius: size.$corner-full;
+  cursor: pointer;
+  transition: size.$transition;
+}
+
+.default {
+  background-color: colors.$white;
+
+  &:hover {
+    background-color: colors.$surface;
+  }
+
+  &:active {
+    background-color: colors.$secondary;
+  }
+}
+
+.primary {
+  background-color: colors.$primary;
+
+  &:hover {
+    background-color: colors.$primary-low;
+  }
+
+  &:active {
+    background-color: colors.$primary-high;
+  }
+}
+
+@media (max-width: size.$breakpoint-middle) {
+  .sliderButton {
+    width: size.$size-5;
+
+    .icon {
+      font-size: $icon-size-small;
+    }
+  }
+}

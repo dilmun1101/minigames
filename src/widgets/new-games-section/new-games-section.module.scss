@@ -1,0 +1,112 @@
+@use '@/shared/styles/tokens/sizes' as size;
+
+// add tokens for new games section slides
+$card-height-large: 384px;
+$card-height-middle: 280px;
+$card-height-small: 200px;
+$track-gap-small: 6px;
+
+$shadow-room: size.$size-05;
+
+$slide-small-large: 120;
+$slide-medium-large: 288;
+$slide-large-large: 816;
+$slide-medium-middle: 104;
+$slide-large-middle: 448;
+$slide-medium-small: 56;
+$slide-large-small: 218;
+
+.newGames {
+  padding: size.$size-5 size.$size-15;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: size.$size-5;
+}
+
+.controls {
+  display: flex;
+  gap: size.$size-2;
+}
+
+.track {
+  display: flex;
+  gap: size.$size-1;
+  height: $card-height-large + $shadow-room;
+  padding: 0 size.$size-1 $shadow-room;
+}
+
+.slide {
+  flex-basis: 0;
+  min-width: 0;
+  list-style: none;
+}
+
+.slideSmall {
+  flex-grow: $slide-small-large;
+}
+
+.slideMedium {
+  flex-grow: $slide-medium-large;
+}
+
+.slideLarge {
+  flex-grow: $slide-large-large;
+}
+
+@media (max-width: size.$breakpoint-middle) {
+  .newGames {
+    padding: size.$size-3 size.$size-5;
+  }
+
+  .header {
+    margin-bottom: size.$size-3;
+  }
+
+  .track {
+    height: $card-height-middle + $shadow-room;
+  }
+
+  .slideSmall {
+    display: none;
+  }
+
+  .slideMedium {
+    flex-grow: $slide-medium-middle;
+  }
+
+  .slideLarge {
+    flex-grow: $slide-large-middle;
+  }
+}
+
+@media (max-width: size.$breakpoint-small) {
+  .newGames {
+    padding: size.$size-2;
+  }
+
+  .header {
+    margin-bottom: size.$size-2;
+  }
+
+  .controls {
+    display: none;
+  }
+
+  .track {
+    gap: $track-gap-small;
+    height: $card-height-small + $shadow-room;
+    padding-inline: size.$size-05;
+  }
+
+  .slideMedium {
+    flex-grow: $slide-medium-small;
+  }
+
+  .slideLarge {
+    flex-grow: $slide-large-small;
+  }
+}

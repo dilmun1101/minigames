@@ -1,0 +1,11 @@
+@use '../../styles/tokens/colors' as colors;
+@use '../../styles/tokens/fonts' as font;
+
+.navLink {
+  text-decoration: none;
+  color: colors.$on-bg;
+  font-weight: font.$medium;
+  font-size: font.$body-medium;
+  letter-spacing: font.$nav-letter-spacing;
+  line-height: font.$nav-line-height;
+}

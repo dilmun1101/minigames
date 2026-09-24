@@ -1,0 +1,34 @@
+@use '../../styles/tokens/colors' as colors;
+@use '../../styles/tokens/sizes' as size;
+@use '../../styles/tokens/fonts' as font;
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: size.$size-1;
+  max-width: size.$size-16;
+  text-decoration: none;
+
+  img {
+    flex-shrink: 0;
+    width: size.$size-4;
+    height: size.$size-4;
+    object-fit: none;
+    object-position: left center;
+  }
+
+  &::after {
+    content: 'MiniGames';
+    color: colors.$on-primary;
+    font-size: font.$headline-medium;
+    font-weight: font.$bold;
+    line-height: normal;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: size.$breakpoint-menu) {
+  .logo::after {
+    font-size: font.$headline-small;
+  }
+}

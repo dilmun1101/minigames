@@ -1,0 +1,6 @@
+@use '../../shared/styles/tokens/sizes' as size;
+
+.wrapper {
+  max-width: size.$breakpoint-large;
+  margin-inline: auto;
+}
