@@ -3,6 +3,7 @@ import styles from './home-page.module.scss';
 import HeroSection from '@/widgets/hero-section/hero-section';
 import NewGamesSection from '@/widgets/new-games-section/new-games-section';
 import LeaderboardTable from '@/widgets/leaderboard-table/leaderboard-table';
+import MinigamesApi from '@/shared/api/minigames-api/minigames-api';
 
 class HomePage extends BaseComponent {
   constructor() {
@@ -19,6 +20,22 @@ class HomePage extends BaseComponent {
       newGamesSection,
       leaderboardTable
     );
+
+    void this.loadFirstImage();
+  }
+
+  private async loadFirstImage(): Promise<void> {
+    try {
+      const imageUrl = await new MinigamesApi().getFirstImageUrl();
+      if (!imageUrl) return;
+
+      const image = document.createElement('img');
+      image.src = imageUrl;
+
+      this.node.append(image);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }
 
   public render(): HTMLElement {
