@@ -1,4 +1,3 @@
-import Header from '@/widgets/header/header';
 import BaseComponent from '@/shared/lib/base-component/base-component';
 import styles from './home-page.module.scss';
 import HeroSection from '@/widgets/hero-section/hero-section';
@@ -7,7 +6,6 @@ import LeaderboardTable from '@/widgets/leaderboard-table/leaderboard-table';
 
 class HomePage extends BaseComponent {
   constructor() {
-    const header = new Header();
     const heroSection = new HeroSection();
     const newGamesSection = new NewGamesSection();
     const leaderboardTable = new LeaderboardTable();
@@ -17,7 +15,6 @@ class HomePage extends BaseComponent {
         tag: 'div',
         className: styles.wrapper,
       },
-      header,
       heroSection,
       newGamesSection,
       leaderboardTable

@@ -36,7 +36,7 @@ class MobileMenu extends BaseComponent<HTMLDivElement> {
     });
 
     const libraryLink = new NavLink({
-      href: ROUTES.HOME,
+      href: ROUTES.LIBRARY,
       text: 'Library',
       className:
         ROUTES.LIBRARY === currentPath
