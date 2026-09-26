@@ -1,6 +1,7 @@
 import BaseComponent from '@/shared/lib/base-component/base-component';
 import PageTitle from '@/shared/ui/page-title/page-title';
 import styles from './library-page.module.scss';
+import FilterSortBar from '@/widgets/filter-sort-bar/filter-sort-bar';
 
 const PAGE = {
   TITLE: 'Game Library',
@@ -14,12 +15,15 @@ class LibraryPage extends BaseComponent {
       description: PAGE.DESCRIPTION,
     });
 
+    const filterSortBar = new FilterSortBar();
+
     super(
       {
         tag: 'div',
         className: styles.wrapper,
       },
-      pageTitle
+      pageTitle,
+      filterSortBar
     );
   }
 
