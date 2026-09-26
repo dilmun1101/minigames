@@ -1,0 +1,41 @@
+@use '@/shared/styles/tokens/colors' as colors;
+@use '@/shared/styles/tokens/sizes' as size;
+@use '@/shared/styles/tokens/fonts' as font;
+
+// add tokens for category chip
+$chip-height: 33px;
+$chip-height-small: 31px;
+$chip-padding: size.$size-2 - size.$border-width;
+$transition: 1s;
+
+.chip {
+  display: flex;
+  align-items: center;
+  height: $chip-height;
+  padding-inline: $chip-padding;
+  color: colors.$on-primary;
+  font-family: inherit;
+  font-size: font.$body-small;
+  font-weight: font.$extra-bold;
+  background-color: colors.$white;
+  border: size.$border;
+  border-radius: size.$corner-full;
+  cursor: pointer;
+  transition: $transition;
+
+  &:hover {
+    background-color: colors.$surface;
+  }
+}
+
+.active,
+.active:hover {
+  background-color: colors.$primary;
+}
+
+@media (max-width: size.$breakpoint-small) {
+  .chip {
+    height: $chip-height-small;
+    font-size: font.$label-medium;
+  }
+}
