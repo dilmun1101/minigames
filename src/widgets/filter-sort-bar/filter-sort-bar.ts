@@ -3,6 +3,8 @@ import styles from './filter-sort-bar.module.scss';
 import MinigamesApi from '@/shared/api/minigames-api/minigames-api';
 import type { CategoryDto } from '@/shared/api/types/types';
 import CategoryChip from './ui/category-chip/category-chip';
+import SortSelect from './ui/sort-select/sort-select';
+import { DEFAULT_SORT, SORT_OPTIONS } from './model/filters';
 
 const ERROR_MESSAGE = 'Failed to load categories';
 
@@ -16,12 +18,18 @@ class FilterSortBar extends BaseComponent<HTMLElement> {
       className: styles.chips,
     });
 
+    const sortSelect = new SortSelect({
+      options: SORT_OPTIONS,
+      selectedValue: DEFAULT_SORT,
+    });
+
     super(
       {
         tag: 'div',
         className: styles.container,
       },
-      chipsList
+      chipsList,
+      sortSelect
     );
 
     this.chipsList = chipsList;
