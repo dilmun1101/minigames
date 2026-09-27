@@ -1,0 +1,65 @@
+@use '@/shared/styles/tokens/colors' as colors;
+@use '@/shared/styles/tokens/sizes' as size;
+@use '@/shared/styles/tokens/fonts' as font;
+
+// add tokens for filter sort bar
+// the height of the chip, the row keeps it while the categories are loading
+$chips-height: 33px;
+$chips-height-small: 31px;
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: size.$size-2;
+  padding: size.$size-2 size.$size-15;
+}
+
+.chips {
+  display: flex;
+  align-items: center;
+  gap: size.$size-2;
+  min-width: 0;
+  min-height: $chips-height;
+  overflow-x: auto;
+  list-style: none;
+  scrollbar-width: none;
+}
+
+.chipItem {
+  flex-shrink: 0;
+}
+
+.message {
+  color: colors.$on-bg;
+  font-size: font.$body-small;
+  font-weight: font.$medium;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+@media (max-width: size.$breakpoint-middle) {
+  .container {
+    flex-direction: column;
+    align-items: stretch;
+    padding: size.$size-2 size.$size-5;
+  }
+
+  .chips {
+    gap: size.$size-1;
+  }
+}
+
+@media (max-width: size.$breakpoint-small) {
+  .container {
+    padding: size.$size-2;
+  }
+
+  .chips {
+    min-height: $chips-height-small;
+  }
+
+  .message {
+    font-size: font.$label-medium;
+  }
+}

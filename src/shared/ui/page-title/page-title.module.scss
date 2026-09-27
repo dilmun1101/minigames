@@ -1,0 +1,48 @@
+@use '../../styles/tokens/colors' as colors;
+@use '../../styles/tokens/sizes' as size;
+@use '../../styles/tokens/fonts' as font;
+
+.pageTitle {
+  padding: size.$size-5 size.$size-15;
+}
+
+.title {
+  color: colors.$on-primary;
+  font-size: font.$display-large;
+  font-weight: font.$bold;
+}
+
+.description {
+  margin-top: size.$size-1;
+  color: colors.$on-bg;
+  font-size: font.$body-large;
+  font-weight: font.$medium;
+}
+
+@media (max-width: size.$breakpoint-middle) {
+  .pageTitle {
+    padding: size.$size-3 size.$size-5;
+  }
+
+  .title {
+    font-size: font.$display-medium;
+  }
+
+  .description {
+    font-size: font.$body-medium;
+  }
+}
+
+@media (max-width: size.$breakpoint-small) {
+  .pageTitle {
+    padding: size.$size-2;
+  }
+
+  .title {
+    font-size: font.$display-small;
+  }
+
+  .description {
+    font-size: font.$body-small;
+  }
+}
