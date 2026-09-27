@@ -2,6 +2,8 @@ import BaseComponent from '@/shared/lib/base-component/base-component';
 import PageTitle from '@/shared/ui/page-title/page-title';
 import styles from './library-page.module.scss';
 import FilterSortBar from '@/widgets/filter-sort-bar/filter-sort-bar';
+import LibraryGameCard from '@/widgets/library-game-card/library-game-card';
+import MinigamesApi from '@/shared/api/minigames-api/minigames-api';
 
 const PAGE = {
   TITLE: 'Game Library',
@@ -25,6 +27,22 @@ class LibraryPage extends BaseComponent {
       pageTitle,
       filterSortBar
     );
+
+    void this.loadFirstGame();
+  }
+
+  private async loadFirstGame(): Promise<void> {
+    try {
+      const games = await new MinigamesApi().getGames();
+      const firstGame = games[0];
+
+      if (!firstGame) return;
+
+      const gameCard = new LibraryGameCard({ game: firstGame });
+      this.append(gameCard);
+    } catch (error) {
+      console.error('Failed ', error);
+    }
   }
 
   public render(): HTMLElement {
