@@ -4,6 +4,7 @@ import MinigamesApi from '@/shared/api/minigames-api/minigames-api';
 import GameDetails from '@/features/game-details/ui/game-details/game-details';
 import type { GameDto } from '@/shared/api/types/types';
 import LibraryGameCard from '../library-game-card/library-game-card';
+import LibraryPagination from '../library-pagination/library-pagination';
 
 const GAMES_ON_PAGE = 6;
 const FIRST_GAME = 0;
@@ -21,6 +22,7 @@ class LibraryGames extends BaseComponent<HTMLElement> {
     });
 
     const gameDetails = new GameDetails();
+    const pagination = new LibraryPagination();
 
     super(
       {
@@ -28,6 +30,7 @@ class LibraryGames extends BaseComponent<HTMLElement> {
         className: styles.games,
       },
       list,
+      pagination,
       gameDetails
     );
 
