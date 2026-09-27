@@ -1,7 +1,10 @@
 import BaseComponent from '@/shared/lib/base-component/base-component';
 import styles from './game-details.module.scss';
+import Button from '@/shared/ui/button/button';
 
-class GameDetails extends BaseComponent<HTMLDivElement> {
+const CLOSE_TEXT = 'Close';
+
+class GameDetails extends BaseComponent<HTMLDialogElement> {
   constructor() {
     const text = new BaseComponent({
       tag: 'p',
@@ -9,13 +12,29 @@ class GameDetails extends BaseComponent<HTMLDivElement> {
       text: `Game details`,
     });
 
+    const closeButton = new Button({
+      text: CLOSE_TEXT,
+      variant: 'additional',
+    });
+
     super(
       {
-        tag: 'div',
+        tag: 'dialog',
         className: styles.container,
       },
-      text
+      text,
+      closeButton
     );
+
+    closeButton.onClick(() => this.close());
+  }
+
+  public open(): void {
+    this.node.showModal();
+  }
+
+  public close(): void {
+    this.node.close();
   }
 }
 

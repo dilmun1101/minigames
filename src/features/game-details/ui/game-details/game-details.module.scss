@@ -1,0 +1,37 @@
+@use '@/shared/styles/tokens/colors' as colors;
+@use '@/shared/styles/tokens/sizes' as size;
+@use '@/shared/styles/tokens/fonts' as font;
+
+// add tokens for game details dialog
+$dialog-width: 320px;
+$backdrop-shade: 0.5;
+
+.dialog {
+  display: none;
+  width: $dialog-width;
+  max-width: 100%;
+  margin: auto;
+  padding: size.$size-3;
+  background-color: colors.$white;
+  border: size.$border;
+  border-radius: size.$corner-large;
+  box-shadow: size.$shadow-level-2;
+
+  &[open] {
+    display: flex;
+    flex-direction: column;
+    gap: size.$size-3;
+    align-items: center;
+  }
+
+  &::backdrop {
+    background-color: rgba(colors.$black, $backdrop-shade);
+  }
+}
+
+.text {
+  color: colors.$on-primary;
+  font-size: font.$body-large;
+  font-weight: font.$bold;
+  text-align: center;
+}
