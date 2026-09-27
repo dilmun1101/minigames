@@ -5,6 +5,7 @@ import styles from './sort-select.module.scss';
 
 const SORT_PREFIX = 'Sort by: ';
 const CLOSED_ICON = 'arrow_drop_down';
+const OPENED_ICON = 'arrow_drop_up';
 const CHECK_ICON = 'check';
 
 function getLabel(options: SortOption[], value: string): string {
@@ -24,6 +25,13 @@ interface SortSelectProps {
 }
 
 class SortSelect extends BaseComponent<HTMLDivElement> {
+  private options: SortOption[];
+  private optionButtons: BaseComponent<HTMLButtonElement>[];
+  private triggerText: BaseComponent;
+  private triggerIcon: Icon;
+  private menu: BaseComponent;
+  private isOpened = false;
+
   constructor({ options, selectedValue, className = [] }: SortSelectProps) {
     const additionalClasses = Array.isArray(className)
       ? className
@@ -52,6 +60,7 @@ class SortSelect extends BaseComponent<HTMLDivElement> {
       triggerIcon
     );
 
+    const optionButtons = [];
     const items = [];
 
     for (let i = 0; i < options.length; i++) {
@@ -85,6 +94,8 @@ class SortSelect extends BaseComponent<HTMLDivElement> {
         label
       );
 
+      optionButtons.push(button);
+
       items.push(
         new BaseComponent(
           {
@@ -99,7 +110,7 @@ class SortSelect extends BaseComponent<HTMLDivElement> {
     const menu = new BaseComponent(
       {
         tag: 'ul',
-        className: [styles.menu],
+        className: [styles.menu, styles.hidden],
       },
       ...items
     );
@@ -112,6 +123,52 @@ class SortSelect extends BaseComponent<HTMLDivElement> {
       trigger,
       menu
     );
+
+    this.options = options;
+    this.optionButtons = optionButtons;
+    this.triggerText = triggerText;
+    this.triggerIcon = triggerIcon;
+    this.menu = menu;
+
+    trigger.node.addEventListener('click', () => this.toggle());
+
+    this.optionButtons.forEach((button, index) => {
+      button.node.addEventListener('click', () => this.select(index));
+    });
+  }
+
+  private select(index: number): void {
+    const option = this.options[index];
+
+    this.optionButtons.forEach((button, buttonIndex) => {
+      const isSelected = buttonIndex === index;
+
+      button.node.classList.toggle(styles.optionSelected, isSelected);
+    });
+
+    this.triggerText.addText(`${SORT_PREFIX}${option.label}`);
+    this.close();
+  }
+
+  private toggle(): void {
+    if (this.isOpened) {
+      this.close();
+      return;
+    }
+
+    this.open();
+  }
+
+  private open(): void {
+    this.isOpened = true;
+    this.menu.removeClass(styles.hidden);
+    this.triggerIcon.addText(OPENED_ICON);
+  }
+
+  private close(): void {
+    this.isOpened = false;
+    this.menu.addClass(styles.hidden);
+    this.triggerIcon.addText(CLOSED_ICON);
   }
 }
 
