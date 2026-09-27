@@ -1,0 +1,44 @@
+@use '@/shared/styles/tokens/colors' as colors;
+@use '@/shared/styles/tokens/sizes' as size;
+@use '@/shared/styles/tokens/fonts' as font;
+
+// add tokens for pagination button
+$button-size: size.$size-5;
+$disabled-border-shade: 0.1;
+$disabled-icon-shade: 0.4;
+$transition: 1s;
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $button-size;
+  height: $button-size;
+  color: colors.$on-primary;
+  font-family: inherit;
+  font-size: font.$body-small;
+  font-weight: font.$extra-bold;
+  line-height: normal;
+  background-color: colors.$white;
+  border: size.$border;
+  border-radius: size.$corner-full;
+  cursor: pointer;
+  transition: $transition;
+}
+
+.button:hover {
+  background-color: colors.$surface;
+}
+
+.active,
+.active:hover {
+  color: colors.$white;
+  background-color: colors.$bg-footer-low;
+}
+
+.button:disabled {
+  color: rgba(colors.$on-primary, $disabled-icon-shade);
+  background-color: transparent;
+  border-color: rgba(colors.$on-primary, $disabled-border-shade);
+  cursor: not-allowed;
+}
