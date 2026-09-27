@@ -11,6 +11,7 @@ const ERROR_MESSAGE = 'Failed to load categories';
 class FilterSortBar extends BaseComponent<HTMLElement> {
   private api = new MinigamesApi();
   private chipsList: BaseComponent;
+  private chips: CategoryChip[] = [];
 
   constructor() {
     const chipsList = new BaseComponent({
@@ -61,6 +62,9 @@ class FilterSortBar extends BaseComponent<HTMLElement> {
         isActive: category.isDefault,
       });
 
+      chip.onClick(() => this.selectChip(chip));
+      this.chips.push(chip);
+
       const item = new BaseComponent(
         {
           tag: 'li',
@@ -71,6 +75,12 @@ class FilterSortBar extends BaseComponent<HTMLElement> {
 
       this.chipsList.append(item);
     }
+  }
+
+  private selectChip(selected: CategoryChip): void {
+    this.chips.forEach((chip) => {
+      chip.addActive(chip === selected);
+    });
   }
 }
 
