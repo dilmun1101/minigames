@@ -1,0 +1,33 @@
+@use '@/shared/styles/tokens/sizes' as size;
+
+// add tokens for library pagination
+$button-size: size.$size-5;
+
+.pagination {
+  display: flex;
+  gap: size.$size-2;
+  align-items: center;
+  justify-content: center;
+  padding-block: size.$size-5;
+}
+
+.pages {
+  display: flex;
+  gap: size.$size-2;
+  align-items: center;
+  min-height: $button-size;
+  list-style: none;
+}
+
+@media (max-width: size.$breakpoint-middle) {
+  .pagination,
+  .pages {
+    gap: size.$size-1;
+  }
+}
+
+@media (max-width: size.$breakpoint-small) {
+  .pagination {
+    padding-block: size.$size-3;
+  }
+}
