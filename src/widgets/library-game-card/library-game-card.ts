@@ -13,10 +13,11 @@ const DETAILS_TEXT = 'Details';
 interface LibraryGameCardProps {
   game: GameDto;
   className?: string | string[];
+  onDetails: () => void;
 }
 
 class LibraryGameCard extends BaseComponent<HTMLElement> {
-  constructor({ game, className = [] }: LibraryGameCardProps) {
+  constructor({ game, className = [], onDetails }: LibraryGameCardProps) {
     const additionalClasses = Array.isArray(className)
       ? className
       : [className];
@@ -122,6 +123,8 @@ class LibraryGameCard extends BaseComponent<HTMLElement> {
       image,
       content
     );
+
+    detailsButton.onClick(() => onDetails());
   }
 }
 

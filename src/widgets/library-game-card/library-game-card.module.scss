@@ -1,0 +1,208 @@
+@use '@/shared/styles/tokens/colors' as colors;
+@use '@/shared/styles/tokens/sizes' as size;
+@use '@/shared/styles/tokens/fonts' as font;
+
+// add tokens for library game card
+$card-row-width: 520px;
+$card-wide-width: 760px;
+$card-height: 200px;
+$card-height-row: 152px;
+$image-part: 38.9%;
+$image-height: 160px - size.$border-width;
+$badge-height: 23px;
+$badge-height-column: 19px;
+$badge-padding: size.$size-1 - size.$border-width;
+$description-lines: 3;
+$description-lines-row: 2;
+$button-height-row: 33px;
+
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: colors.$white;
+  border: size.$border;
+  border-radius: size.$corner-large;
+  box-shadow: size.$shadow-level-1;
+}
+
+.image {
+  flex-shrink: 0;
+  width: 100%;
+  height: $image-height;
+  object-fit: cover;
+}
+
+.content {
+  display: grid;
+  flex-grow: 1;
+  grid-template-areas:
+    'titleInfo titleInfo'
+    'description description'
+    'stats price'
+    'details details';
+  grid-template-columns: 1fr auto;
+  gap: size.$size-2;
+  min-width: 0;
+  padding: size.$size-2;
+}
+
+.titleInfo {
+  display: flex;
+  flex-direction: column;
+  grid-area: titleInfo;
+  gap: size.$size-1;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.title {
+  max-width: 100%;
+  overflow: hidden;
+  color: colors.$on-primary;
+  font-size: font.$headline-small;
+  font-weight: font.$bold;
+  line-height: normal;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.genre {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  height: $badge-height-column;
+  padding-inline: $badge-padding;
+  color: colors.$on-primary;
+  font-size: font.$label-medium;
+  font-weight: font.$extra-bold;
+  text-transform: capitalize;
+  background-color: colors.$secondary;
+  border: size.$border;
+  border-radius: size.$corner-full;
+}
+
+.price {
+  grid-area: price;
+  align-self: center;
+  justify-self: end;
+  color: colors.$on-primary;
+  font-size: font.$headline-small;
+  font-weight: font.$extra-bold;
+}
+
+.priceFree {
+  color: colors.$price-free;
+}
+
+.description {
+  display: -webkit-box;
+  grid-area: description;
+  overflow: hidden;
+  color: colors.$on-bg;
+  font-size: font.$body-medium;
+  font-weight: font.$medium;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $description-lines-row;
+}
+
+.stats {
+  display: flex;
+  grid-area: stats;
+  gap: size.$size-2;
+  align-items: center;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: size.$size-05;
+  color: colors.$on-primary;
+  font-size: font.$label-medium;
+  font-weight: font.$bold;
+}
+
+.star {
+  color: colors.$primary;
+}
+
+.heart {
+  color: colors.$like;
+}
+
+.details {
+  grid-area: details;
+}
+
+@container (min-width: #{$card-row-width}) {
+  .card {
+    flex-direction: row;
+    height: $card-height-row;
+  }
+
+  .image {
+    width: $image-part;
+    height: 100%;
+  }
+
+  .content {
+    grid-template-areas:
+      'titleInfo price'
+      'description description'
+      'stats details';
+    grid-template-rows: auto 1fr auto;
+    gap: 0;
+  }
+
+  .titleInfo {
+    flex-direction: row;
+    gap: size.$size-2;
+    align-items: center;
+  }
+
+  .genre {
+    height: $badge-height;
+  }
+
+  .description {
+    margin-block: auto;
+  }
+
+  .stats {
+    align-self: center;
+  }
+
+  .details {
+    justify-self: end;
+    min-height: $button-height-row;
+    padding: size.$btn-padding-middle;
+  }
+}
+
+@container (min-width: #{$card-wide-width}) {
+  .card {
+    height: $card-height;
+  }
+
+  .title,
+  .price {
+    font-size: font.$headline-medium;
+  }
+
+  .description {
+    font-size: font.$body-large;
+  }
+
+  .stats {
+    gap: size.$size-3;
+  }
+
+  .stat {
+    font-size: font.$body-small;
+  }
+
+  .details {
+    min-height: size.$btn-min-height;
+    padding: size.$btn-padding;
+  }
+}

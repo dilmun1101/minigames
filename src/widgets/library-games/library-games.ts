@@ -12,6 +12,7 @@ const ERROR_MESSAGE = 'Failed to load games';
 class LibraryGames extends BaseComponent<HTMLElement> {
   private api = new MinigamesApi();
   private list: BaseComponent;
+  private gameDetails: GameDetails;
 
   constructor() {
     const list = new BaseComponent({
@@ -31,6 +32,7 @@ class LibraryGames extends BaseComponent<HTMLElement> {
     );
 
     this.list = list;
+    this.gameDetails = gameDetails;
     this.loadGames();
   }
 
@@ -54,6 +56,7 @@ class LibraryGames extends BaseComponent<HTMLElement> {
     for (let i = 0; i < games.length; i++) {
       const card = new LibraryGameCard({
         game: games[i],
+        onDetails: () => this.gameDetails.open(),
       });
 
       const item = new BaseComponent(
