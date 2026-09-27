@@ -45,6 +45,11 @@ class PaginationButton extends BaseComponent<HTMLButtonElement> {
     this.node.disabled = disabled;
     return this;
   }
+
+  public onClick(handler: (event: MouseEvent) => void): this {
+    this.node.addEventListener('click', handler);
+    return this;
+  }
 }
 
 export default PaginationButton;
