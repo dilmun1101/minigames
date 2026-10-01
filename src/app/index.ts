@@ -1,8 +1,8 @@
+import Layout from './layouts/layout';
 import Router from './router/router';
 
-const app = document.createElement('div');
-app.id = 'app';
-document.body.append(app);
+const layout = new Layout();
+document.body.append(layout.node);
 
-const router = new Router(app);
+const router = new Router(layout.content.node);
 router.init();

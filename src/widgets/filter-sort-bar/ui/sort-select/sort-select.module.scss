@@ -1,0 +1,132 @@
+@use '@/shared/styles/tokens/colors' as colors;
+@use '@/shared/styles/tokens/sizes' as size;
+@use '@/shared/styles/tokens/fonts' as font;
+
+// add tokens for sort select
+$trigger-height: 44px;
+$trigger-height-middle: size.$size-5;
+$trigger-padding: size.$size-17 - size.$border-width;
+$trigger-padding-middle: size.$size-2 - size.$border-width;
+$menu-offset: size.$size-05;
+$menu-width: 200px;
+$menu-layer: 1;
+$option-height: 49px;
+$option-padding: size.$size-2 - size.$border-width;
+$separator: 1px solid colors.$outline;
+$selected-border: 1px solid colors.$on-primary;
+$check-size: 14px;
+$transition: 1s;
+
+.sortSelect {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: size.$size-1;
+  height: $trigger-height;
+  padding-inline: $trigger-padding;
+  color: colors.$on-primary;
+  font-family: inherit;
+  font-size: font.$body-small;
+  font-weight: font.$extra-bold;
+  line-height: normal;
+  white-space: nowrap;
+  background-color: colors.$white;
+  border: size.$border;
+  border-radius: size.$corner-full;
+  cursor: pointer;
+  transition: $transition;
+
+  &:hover {
+    background-color: colors.$surface;
+  }
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + #{$menu-offset});
+  right: 0;
+  z-index: $menu-layer;
+  min-width: $menu-width;
+  overflow: hidden;
+  list-style: none;
+  background-color: colors.$white;
+  border: size.$border;
+  border-radius: size.$corner-medium;
+  box-shadow: size.$shadow-level-1;
+}
+
+.hidden {
+  display: none;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: size.$size-1;
+  width: 100%;
+  min-height: $option-height;
+  padding-inline: $option-padding;
+  color: colors.$on-primary;
+  font-family: inherit;
+  font-size: font.$body-small;
+  font-weight: font.$regular;
+  text-align: left;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: $transition;
+
+  &:hover {
+    background-color: colors.$surface;
+  }
+}
+
+.item:not(:last-child) .option {
+  border-bottom: $separator;
+}
+
+.optionSelected,
+.optionSelected:hover {
+  font-weight: font.$bold;
+  background-color: colors.$primary-low;
+  border-block: $selected-border;
+}
+
+.check {
+  flex-shrink: 0;
+  width: $check-size;
+  color: colors.$tertiary;
+  font-size: $check-size;
+  visibility: hidden;
+}
+
+.optionSelected .check {
+  visibility: visible;
+}
+
+@media (max-width: size.$breakpoint-middle) {
+  .trigger {
+    height: $trigger-height-middle;
+    padding-inline: $trigger-padding-middle;
+  }
+}
+
+@media (max-width: size.$breakpoint-small) {
+  .sortSelect {
+    width: 100%;
+  }
+
+  .trigger {
+    justify-content: space-between;
+    width: 100%;
+    font-size: font.$label-medium;
+  }
+
+  .menu {
+    left: 0;
+  }
+}

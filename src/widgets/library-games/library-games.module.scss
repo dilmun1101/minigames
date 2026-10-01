@@ -1,0 +1,58 @@
+@use '@/shared/styles/tokens/colors' as colors;
+@use '@/shared/styles/tokens/sizes' as size;
+@use '@/shared/styles/tokens/fonts' as font;
+
+// add tokens for library games section
+$two-columns-width: 1320px;
+
+.games {
+  padding-inline: size.$size-15;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: size.$size-3;
+  list-style: none;
+}
+
+.item {
+  container-type: inline-size;
+  min-width: 0;
+}
+
+.message {
+  color: colors.$on-bg;
+  font-size: font.$body-large;
+  font-weight: font.$medium;
+}
+
+@media (min-width: $two-columns-width) {
+  .list {
+    flex-flow: row wrap;
+  }
+
+  .item {
+    flex: 1 1 calc(50% - #{size.$size-3});
+  }
+}
+
+@media (max-width: size.$breakpoint-middle) {
+  .games {
+    padding-inline: size.$size-5;
+  }
+}
+
+@media (max-width: size.$breakpoint-small) {
+  .games {
+    padding-inline: size.$size-2;
+  }
+
+  .list {
+    gap: size.$size-2;
+  }
+
+  .message {
+    font-size: font.$body-medium;
+  }
+}
