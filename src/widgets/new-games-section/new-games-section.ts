@@ -7,14 +7,18 @@ import MinigamesApi from '@/shared/api/minigames-api/minigames-api';
 import type { GameDto } from '@/shared/api/types/types';
 import { getSlideOffset } from './model/getSlideOffset';
 import { getLoopedIndex } from './model/getLoopedIndex';
+import GameDetails from '@/features/game-details/ui/game-details/game-details';
 
 const ERROR_MESSAGE = 'Failed to load games';
+const AUTOPLAY_DELAY = 4000;
 
 class NewGamesSection extends BaseComponent<HTMLElement> {
   private api = new MinigamesApi();
   private track: BaseComponent;
   private slides: BaseComponent[] = [];
   private center = 0;
+  private gameDetails: GameDetails;
+  private timerId: number | null = null;
 
   constructor() {
     const title = new SectionTitle({
@@ -53,18 +57,25 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
       className: styles.track,
     });
 
+    const gameDetails = new GameDetails();
+
     super(
       {
         tag: 'section',
         className: styles.newGames,
       },
       header,
-      track
+      track,
+      gameDetails
     );
 
     this.track = track;
     prevButton.node.addEventListener('click', () => this.moveBy(-1));
     nextButton.node.addEventListener('click', () => this.moveBy(1));
+
+    this.gameDetails = gameDetails;
+    this.track.node.addEventListener('click', (e) => this.onClick(e));
+
     this.loadGames();
   }
 
@@ -102,6 +113,7 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
     }
 
     this.showSizes();
+    this.runTimer();
   }
 
   private showSizes(): void {
@@ -146,6 +158,35 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
     });
 
     this.showSizes();
+    this.runTimer();
+  }
+
+  private onClick(e: MouseEvent): void {
+    const target = e.target;
+
+    if (!(target instanceof Element)) return;
+
+    const slide = target.closest(`.${styles.slide}`);
+
+    if (!slide) return;
+
+    this.gameDetails.open();
+  }
+
+  private runTimer(): void {
+    this.stopTimer();
+
+    this.timerId = window.setTimeout(() => {
+      this.timerId = null;
+      this.moveBy(1);
+    }, AUTOPLAY_DELAY);
+  }
+
+  private stopTimer(): void {
+    if (this.timerId === null) return;
+
+    window.clearTimeout(this.timerId);
+    this.timerId = null;
   }
 }
 
