@@ -11,6 +11,7 @@ import GameDetails from '@/features/game-details/ui/game-details/game-details';
 
 const ERROR_MESSAGE = 'Failed to load games';
 const AUTOPLAY_DELAY = 4000;
+const SWIPE_DISTANCE = 100;
 
 class NewGamesSection extends BaseComponent<HTMLElement> {
   private api = new MinigamesApi();
@@ -19,6 +20,9 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
   private center = 0;
   private gameDetails: GameDetails;
   private timerId: number | null = null;
+  private isPressed = false;
+  private isSwiped = false;
+  private pointerStartX = 0;
 
   constructor() {
     const title = new SectionTitle({
@@ -75,6 +79,12 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
 
     this.gameDetails = gameDetails;
     this.track.node.addEventListener('click', (e) => this.onClick(e));
+
+    track.node.addEventListener('pointerdown', (e) => this.onPointerDown(e));
+    track.node.addEventListener('pointerup', () => this.onPointerUp());
+    track.node.addEventListener('pointermove', (e) => this.onPointerMove(e));
+    track.node.addEventListener('pointercancel', () => this.onPointerUp());
+    track.node.addEventListener('dragstart', (e) => e.preventDefault());
 
     this.loadGames();
   }
@@ -187,6 +197,35 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
 
     window.clearTimeout(this.timerId);
     this.timerId = null;
+  }
+
+  private onPointerDown(e: PointerEvent): void {
+    this.track.node.setPointerCapture(e.pointerId);
+
+    this.isPressed = true;
+    this.isSwiped = false;
+    this.pointerStartX = e.clientX;
+  }
+
+  private onPointerMove(e: PointerEvent): void {
+    if (!this.isPressed || this.isSwiped) return;
+
+    const horizontalDistance = e.clientX - this.pointerStartX;
+
+    if (Math.abs(horizontalDistance) < SWIPE_DISTANCE) return;
+
+    this.isSwiped = true;
+
+    if (horizontalDistance < 0) {
+      this.moveBy(1);
+      return;
+    }
+
+    this.moveBy(-1);
+  }
+
+  private onPointerUp(): void {
+    this.isPressed = false;
   }
 }
 
