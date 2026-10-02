@@ -5,20 +5,15 @@ import styles from './new-games-section.module.scss';
 import GameCard from '../game-card/game-card';
 import MinigamesApi from '@/shared/api/minigames-api/minigames-api';
 import type { GameDto } from '@/shared/api/types/types';
-
-const SLIDE_CLASSES = [
-  styles.slideSmall,
-  styles.slideMedium,
-  styles.slideLarge,
-  styles.slideMedium,
-  styles.slideSmall,
-];
+import { getSlideOffset } from './model/slider';
 
 const ERROR_MESSAGE = 'Failed to load games';
 
 class NewGamesSection extends BaseComponent<HTMLElement> {
   private api = new MinigamesApi();
   private track: BaseComponent;
+  private slides: BaseComponent[] = [];
+  private center = 0;
 
   constructor() {
     const title = new SectionTitle({
@@ -94,12 +89,46 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
       const slide = new BaseComponent(
         {
           tag: 'li',
-          className: [styles.slide, SLIDE_CLASSES[i]],
+          className: styles.slide,
         },
         card
       );
 
+      this.slides.push(slide);
       this.track.append(slide);
+    }
+
+    this.showSizes();
+  }
+
+  private showSizes(): void {
+    const total = this.slides.length;
+
+    for (let i = 0; i < total; i++) {
+      const slide = this.slides[i];
+      const offset = getSlideOffset({
+        index: i,
+        center: this.center,
+        total,
+      });
+      const distance = Math.abs(offset);
+
+      slide.node.style.order = String(offset + total);
+
+      slide.removeClass(styles.slideLarge);
+      slide.removeClass(styles.slideMedium);
+      slide.removeClass(styles.slideSmall);
+      slide.removeClass(styles.slideHidden);
+
+      if (distance === 0) {
+        slide.addClass(styles.slideLarge);
+      } else if (distance === 1) {
+        slide.addClass(styles.slideMedium);
+      } else if (distance === 2) {
+        slide.addClass(styles.slideSmall);
+      } else {
+        slide.addClass(styles.slideHidden);
+      }
     }
   }
 }
