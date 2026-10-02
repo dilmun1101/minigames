@@ -5,7 +5,8 @@ import styles from './new-games-section.module.scss';
 import GameCard from '../game-card/game-card';
 import MinigamesApi from '@/shared/api/minigames-api/minigames-api';
 import type { GameDto } from '@/shared/api/types/types';
-import { getSlideOffset } from './model/slider';
+import { getSlideOffset } from './model/getSlideOffset';
+import { getLoopedIndex } from './model/getLoopedIndex';
 
 const ERROR_MESSAGE = 'Failed to load games';
 
@@ -62,6 +63,8 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
     );
 
     this.track = track;
+    prevButton.node.addEventListener('click', () => this.moveBy(-1));
+    nextButton.node.addEventListener('click', () => this.moveBy(1));
     this.loadGames();
   }
 
@@ -130,6 +133,19 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
         slide.addClass(styles.slideHidden);
       }
     }
+  }
+
+  private moveBy(step: number): void {
+    const total = this.slides.length;
+
+    if (total === 0) return;
+
+    this.center = getLoopedIndex({
+      index: this.center + step,
+      total,
+    });
+
+    this.showSizes();
   }
 }
 
