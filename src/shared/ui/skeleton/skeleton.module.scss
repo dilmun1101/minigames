@@ -1,0 +1,25 @@
+@use '../../styles/tokens/colors' as colors;
+@use '../../styles/tokens/sizes' as size;
+
+// add tokens for skeleton
+$pulse-time: 2s;
+$pulse-from: colors.$outline-variant;
+$pulse-to: colors.$outline;
+
+@keyframes pulse {
+  from {
+    background-color: $pulse-from;
+  }
+
+  to {
+    background-color: $pulse-to;
+  }
+}
+
+.skeleton {
+  width: 100%;
+  height: 100%;
+  background-color: $pulse-from;
+  border-radius: size.$corner-small;
+  animation: pulse $pulse-time infinite alternate;
+}

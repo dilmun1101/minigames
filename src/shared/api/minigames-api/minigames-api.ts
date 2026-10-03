@@ -1,4 +1,4 @@
-import { ASSETS_URL, MOCK_DATA_URL } from '../config/config';
+import { ASSETS_URL, API_URL } from '../config/config';
 import HttpClient from '../http-client/http-client';
 import type {
   ApiResponse,
@@ -12,13 +12,14 @@ import type {
 const GAMES_JSON = 'all-games-seed.json';
 const LEADERBOARD_JSON = 'leaderboard.json';
 const CATEGORIES_JSON = 'categories.json';
+const FEATURED_GAMES = 'games?featured=true';
 
 class MinigamesApi {
-  private client = new HttpClient(MOCK_DATA_URL);
+  private backend = new HttpClient(API_URL);
 
   public async getGames(): Promise<GameDto[]> {
     const response =
-      await this.client.getJson<ApiResponse<GameDto[]>>(GAMES_JSON);
+      await this.backend.getJson<ApiResponse<GameDto[]>>(GAMES_JSON);
 
     return response.data.map((game) => ({
       ...game,
@@ -38,8 +39,18 @@ class MinigamesApi {
     return games.filter((game) => game.category === category);
   }
 
+  public async getFeaturedGames(): Promise<GameDto[]> {
+    const response =
+      await this.backend.getJson<ApiResponse<GameDto[]>>(FEATURED_GAMES);
+
+    return response.data.map((game) => ({
+      ...game,
+      cardImage: this.getImageUrl(game.cardImage),
+    }));
+  }
+
   public async getGameDetails(slug: string): Promise<GameDetailsDto> {
-    const response = await this.client.getJson<ApiResponse<GameDetailsDto>>(
+    const response = await this.backend.getJson<ApiResponse<GameDetailsDto>>(
       `game-${slug}.json`
     );
 
@@ -50,7 +61,7 @@ class MinigamesApi {
   }
 
   public async getGameComments(slug: string): Promise<CommentDto[]> {
-    const response = await this.client.getJson<ApiResponse<CommentDto[]>>(
+    const response = await this.backend.getJson<ApiResponse<CommentDto[]>>(
       `comments-${slug}.json`
     );
 
@@ -59,7 +70,7 @@ class MinigamesApi {
 
   public async getTopPlayers(): Promise<LeaderboardPlayerDto[]> {
     const response =
-      await this.client.getJson<ApiResponse<LeaderboardPlayerDto[]>>(
+      await this.backend.getJson<ApiResponse<LeaderboardPlayerDto[]>>(
         LEADERBOARD_JSON
       );
 
@@ -68,7 +79,7 @@ class MinigamesApi {
 
   public async getCategories(): Promise<CategoryDto[]> {
     const response =
-      await this.client.getJson<ApiResponse<CategoryDto[]>>(CATEGORIES_JSON);
+      await this.backend.getJson<ApiResponse<CategoryDto[]>>(CATEGORIES_JSON);
 
     return response.data;
   }
