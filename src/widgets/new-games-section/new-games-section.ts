@@ -23,6 +23,9 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
   private isPressed = false;
   private isSwiped = false;
   private pointerStartX = 0;
+  private timerStart = 0;
+  private timerLeft = AUTOPLAY_DELAY;
+  private pressedTarget: EventTarget | null = null;
 
   constructor() {
     const title = new SectionTitle({
@@ -78,7 +81,7 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
     nextButton.node.addEventListener('click', () => this.moveBy(1));
 
     this.gameDetails = gameDetails;
-    this.track.node.addEventListener('click', (e) => this.onClick(e));
+    this.track.node.addEventListener('click', () => this.onClick());
 
     track.node.addEventListener('pointerdown', (e) => this.onPointerDown(e));
     track.node.addEventListener('pointerup', () => this.onPointerUp());
@@ -171,25 +174,46 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
     this.runTimer();
   }
 
-  private onClick(e: MouseEvent): void {
-    const target = e.target;
+  private onClick(): void {
+    const target = this.pressedTarget;
 
-    if (!(target instanceof Element)) return;
+    if (this.isSwiped || !(target instanceof Element)) {
+      return;
+    }
 
     const slide = target.closest(`.${styles.slide}`);
 
-    if (!slide) return;
+    if (!slide) {
+      return;
+    }
 
     this.gameDetails.open();
   }
 
-  private runTimer(): void {
+  private runTimer(delay: number = AUTOPLAY_DELAY): void {
     this.stopTimer();
 
-    this.timerId = window.setTimeout(() => {
-      this.timerId = null;
-      this.moveBy(1);
-    }, AUTOPLAY_DELAY);
+    this.timerStart = Date.now();
+    this.timerLeft = delay;
+
+    this.timerId = window.setTimeout(() => this.onTimer(), delay);
+  }
+
+  private onTimer(): void {
+    this.timerId = null;
+    this.moveBy(1);
+  }
+
+  private pauseTimer(): void {
+    if (this.timerId === null) {
+      return;
+    }
+
+    this.stopTimer();
+
+    const passed = Date.now() - this.timerStart;
+
+    this.timerLeft = Math.max(this.timerLeft - passed, 0);
   }
 
   private stopTimer(): void {
@@ -202,9 +226,12 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
   private onPointerDown(e: PointerEvent): void {
     this.track.node.setPointerCapture(e.pointerId);
 
+    this.pressedTarget = e.target;
     this.isPressed = true;
     this.isSwiped = false;
     this.pointerStartX = e.clientX;
+
+    this.pauseTimer();
   }
 
   private onPointerMove(e: PointerEvent): void {
@@ -225,7 +252,17 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
   }
 
   private onPointerUp(): void {
+    if (!this.isPressed) {
+      return;
+    }
+
     this.isPressed = false;
+
+    if (this.isSwiped) {
+      return;
+    }
+
+    this.runTimer(this.timerLeft);
   }
 }
 
