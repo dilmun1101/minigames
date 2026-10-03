@@ -94,10 +94,9 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
 
   private async loadGames(): Promise<void> {
     try {
-      const games = await this.api.getGames();
-      const featuredGames = games.filter((game) => game.featured);
+      const games = await this.api.getFeaturedGames();
 
-      this.showSlides(featuredGames);
+      this.showSlides(games);
     } catch {
       const message = new BaseComponent({
         tag: 'li',
