@@ -41,6 +41,7 @@ $slide-large-small: 218;
   padding-bottom: $shadow-room;
   list-style: none;
   cursor: grab;
+  user-select: none;
 }
 
 .track:active {
