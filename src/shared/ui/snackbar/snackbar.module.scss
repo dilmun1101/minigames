@@ -1,0 +1,86 @@
+@use '../../styles/tokens/colors' as colors;
+@use '../../styles/tokens/sizes' as size;
+@use '../../styles/tokens/fonts' as font;
+
+// add tokens for snackbar
+$snackbar-width: 320px;
+$snackbar-layer: 100;
+$appear-time: 0.3s;
+$appear-shift: size.$size-2;
+
+@keyframes appear {
+  from {
+    transform: translateY($appear-shift);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.container {
+  position: fixed;
+  right: size.$size-3;
+  bottom: size.$size-3;
+  z-index: $snackbar-layer;
+  display: flex;
+  flex-direction: column;
+  gap: size.$size-1;
+  max-width: 100%;
+  pointer-events: none;
+}
+
+.snackbar {
+  display: flex;
+  gap: size.$size-2;
+  align-items: center;
+  justify-content: space-between;
+  width: $snackbar-width;
+  max-width: 100%;
+  padding: size.$size-2;
+  color: colors.$white;
+  border: size.$border;
+  border-radius: size.$corner-small;
+  box-shadow: size.$shadow-level-1;
+  animation: appear $appear-time ease-out;
+  pointer-events: auto;
+}
+
+.success {
+  background-color: colors.$price-free;
+}
+
+.error {
+  background-color: colors.$error;
+}
+
+.text {
+  font-size: font.$body-small;
+  font-weight: font.$bold;
+}
+
+.close {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: inherit;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+@media (max-width: size.$breakpoint-small) {
+  .container {
+    right: size.$size-2;
+    bottom: size.$size-2;
+    left: size.$size-2;
+  }
+
+  .snackbar {
+    width: 100%;
+  }
+}

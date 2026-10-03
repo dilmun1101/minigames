@@ -85,6 +85,19 @@ $slide-large-small: 218;
   line-height: normal;
 }
 
+.skeleton {
+  border: size.$border;
+  border-radius: size.$corner-extra-large;
+}
+
+.emptyState:not(:empty) {
+  padding-bottom: $shadow-room;
+}
+
+.hidden {
+  display: none;
+}
+
 @media (max-width: size.$breakpoint-middle) {
   .newGames {
     padding: size.$size-3 size.$size-5;

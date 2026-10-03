@@ -1,0 +1,33 @@
+@use '../../styles/tokens/colors' as colors;
+@use '../../styles/tokens/sizes' as size;
+@use '../../styles/tokens/fonts' as font;
+
+.errorBanner {
+  display: flex;
+  flex-direction: column;
+  gap: size.$size-2;
+  align-items: center;
+  justify-content: center;
+  padding: size.$size-5;
+  text-align: center;
+  background-color: colors.$white;
+  border: size.$border;
+  border-radius: size.$corner-large;
+  box-shadow: size.$shadow-level-1;
+}
+
+.message {
+  color: colors.$error;
+  font-size: font.$body-large;
+  font-weight: font.$bold;
+}
+
+@media (max-width: size.$breakpoint-middle) {
+  .errorBanner {
+    padding: size.$size-3;
+  }
+
+  .message {
+    font-size: font.$body-medium;
+  }
+}

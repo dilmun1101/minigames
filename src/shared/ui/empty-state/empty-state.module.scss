@@ -1,0 +1,31 @@
+@use '../../styles/tokens/colors' as colors;
+@use '../../styles/tokens/sizes' as size;
+@use '../../styles/tokens/fonts' as font;
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: size.$size-5;
+  text-align: center;
+  background-color: colors.$surface-low;
+  border: size.$border;
+  border-radius: size.$corner-large;
+}
+
+.message {
+  color: colors.$on-bg;
+  font-size: font.$body-large;
+  font-weight: font.$medium;
+  line-height: normal;
+}
+
+@media (max-width: size.$breakpoint-middle) {
+  .container {
+    padding: size.$size-3;
+  }
+
+  .message {
+    font-size: font.$body-medium;
+  }
+}

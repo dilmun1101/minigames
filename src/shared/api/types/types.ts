@@ -11,7 +11,7 @@ export interface GameDto {
   rating: number;
   likesCount: number;
   cardImage: string;
-  featured: boolean;
+  featured?: boolean;
 }
 
 export interface CategoryDto {

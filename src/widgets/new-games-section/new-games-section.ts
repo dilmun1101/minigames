@@ -8,10 +8,16 @@ import type { GameDto } from '@/shared/api/types/types';
 import { getSlideOffset } from './model/getSlideOffset';
 import { getLoopedIndex } from './model/getLoopedIndex';
 import GameDetails from '@/features/game-details/ui/game-details/game-details';
+import Skeleton from '@/shared/ui/skeleton/skeleton';
+import EmptyState from '@/shared/ui/empty-state/empty-state';
+import ErrorBanner from '@/shared/ui/error-banner/error-banner';
+import snackbar from '@/shared/ui/snackbar/snackbar';
 
 const ERROR_MESSAGE = 'Failed to load games';
 const AUTOPLAY_DELAY = 4000;
 const SWIPE_DISTANCE = 100;
+const RETRY_SUCCESS_MESSAGE = 'Games are loaded';
+const EMPTY_MESSAGE = 'There are no games yet';
 
 class NewGamesSection extends BaseComponent<HTMLElement> {
   private api = new MinigamesApi();
@@ -26,6 +32,7 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
   private timerStart = 0;
   private timerLeft = AUTOPLAY_DELAY;
   private pressedTarget: EventTarget | null = null;
+  private emptyState: BaseComponent;
 
   constructor() {
     const title = new SectionTitle({
@@ -64,6 +71,11 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
       className: styles.track,
     });
 
+    const emptyState = new BaseComponent({
+      tag: 'div',
+      className: styles.emptyState,
+    });
+
     const gameDetails = new GameDetails();
 
     super(
@@ -73,10 +85,12 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
       },
       header,
       track,
+      emptyState,
       gameDetails
     );
 
     this.track = track;
+    this.emptyState = emptyState;
     prevButton.node.addEventListener('click', () => this.moveBy(-1));
     nextButton.node.addEventListener('click', () => this.moveBy(1));
 
@@ -92,24 +106,74 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
     this.loadGames();
   }
 
-  private async loadGames(): Promise<void> {
+  private async loadGames(isRetry = false): Promise<void> {
+    this.showSkeleton();
+
     try {
-      const games = await this.api.getGames();
-      const featuredGames = games.filter((game) => game.featured);
+      const games = await this.api.getFeaturedGames();
 
-      this.showSlides(featuredGames);
+      if (games.length === 0) {
+        this.showEmptyState();
+        return;
+      }
+
+      this.showSlides(games);
+
+      if (isRetry) {
+        snackbar.showSuccess(RETRY_SUCCESS_MESSAGE);
+      }
     } catch {
-      const message = new BaseComponent({
-        tag: 'li',
-        className: styles.message,
-        text: ERROR_MESSAGE,
-      });
-
-      this.track.append(message);
+      this.showError();
+      snackbar.showError(ERROR_MESSAGE);
     }
   }
 
+  private showSkeleton(): void {
+    this.clear();
+
+    const sizes = [
+      styles.slideSmall,
+      styles.slideMedium,
+      styles.slideLarge,
+      styles.slideMedium,
+      styles.slideSmall,
+    ];
+
+    for (const size of sizes) {
+      const slide = new BaseComponent(
+        {
+          tag: 'li',
+          className: [styles.slide, size],
+        },
+        new Skeleton({ className: styles.skeleton })
+      );
+
+      this.track.append(slide);
+    }
+  }
+
+  private showEmptyState(): void {
+    this.clear();
+    this.track.addClass(styles.hidden);
+
+    this.emptyState.append(new EmptyState({ text: EMPTY_MESSAGE }));
+  }
+
+  private showError(): void {
+    this.clear();
+    this.track.addClass(styles.hidden);
+
+    this.emptyState.append(
+      new ErrorBanner({
+        text: ERROR_MESSAGE,
+        onRetry: () => this.loadGames(true),
+      })
+    );
+  }
+
   private showSlides(games: GameDto[]): void {
+    this.clear();
+
     for (let i = 0; i < games.length; i++) {
       const card = new GameCard({ game: games[i] });
 
@@ -263,6 +327,15 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
     }
 
     this.runTimer(this.timerLeft);
+  }
+
+  private clear(): void {
+    this.stopTimer();
+    this.track.destroyChildren();
+    this.emptyState.destroyChildren();
+    this.track.removeClass(styles.hidden);
+    this.slides = [];
+    this.center = 0;
   }
 }
 
