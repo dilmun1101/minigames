@@ -9,6 +9,7 @@ import { getSlideOffset } from './model/getSlideOffset';
 import { getLoopedIndex } from './model/getLoopedIndex';
 import GameDetails from '@/features/game-details/ui/game-details/game-details';
 import Skeleton from '@/shared/ui/skeleton/skeleton';
+import EmptyState from '@/shared/ui/empty-state/empty-state';
 
 const ERROR_MESSAGE = 'Failed to load games';
 const AUTOPLAY_DELAY = 4000;
@@ -27,6 +28,7 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
   private timerStart = 0;
   private timerLeft = AUTOPLAY_DELAY;
   private pressedTarget: EventTarget | null = null;
+  private emptyState: BaseComponent;
 
   constructor() {
     const title = new SectionTitle({
@@ -65,6 +67,11 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
       className: styles.track,
     });
 
+    const emptyState = new BaseComponent({
+      tag: 'div',
+      className: styles.emptyState,
+    });
+
     const gameDetails = new GameDetails();
 
     super(
@@ -74,10 +81,12 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
       },
       header,
       track,
+      emptyState,
       gameDetails
     );
 
     this.track = track;
+    this.emptyState = emptyState;
     prevButton.node.addEventListener('click', () => this.moveBy(-1));
     nextButton.node.addEventListener('click', () => this.moveBy(1));
 
@@ -97,7 +106,13 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
     this.showSkeleton();
 
     try {
-      const games = await this.api.getFeaturedGames();
+      // const games = await this.api.getFeaturedGames();
+      const games: GameDto[] = [];
+
+      if (games.length === 0) {
+        this.showEmptyState();
+        return;
+      }
 
       this.showSlides(games);
     } catch {
@@ -135,7 +150,16 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
     }
   }
 
+  private showEmptyState(): void {
+    this.clear();
+    this.track.addClass(styles.hidden);
+
+    this.emptyState.append(new EmptyState({ text: ERROR_MESSAGE }));
+  }
+
   private showSlides(games: GameDto[]): void {
+    this.clear();
+
     for (let i = 0; i < games.length; i++) {
       const card = new GameCard({ game: games[i] });
 
@@ -294,6 +318,7 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
   private clear(): void {
     this.stopTimer();
     this.track.destroyChildren();
+    this.emptyState.destroyChildren();
     this.track.removeClass(styles.hidden);
     this.slides = [];
     this.center = 0;

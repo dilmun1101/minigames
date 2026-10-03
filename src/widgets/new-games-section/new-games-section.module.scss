@@ -90,6 +90,10 @@ $slide-large-small: 218;
   border-radius: size.$corner-extra-large;
 }
 
+.emptyState:not(:empty) {
+  padding-bottom: $shadow-room;
+}
+
 .hidden {
   display: none;
 }
