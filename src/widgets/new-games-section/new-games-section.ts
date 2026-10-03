@@ -10,10 +10,14 @@ import { getLoopedIndex } from './model/getLoopedIndex';
 import GameDetails from '@/features/game-details/ui/game-details/game-details';
 import Skeleton from '@/shared/ui/skeleton/skeleton';
 import EmptyState from '@/shared/ui/empty-state/empty-state';
+import ErrorBanner from '@/shared/ui/error-banner/error-banner';
+import snackbar from '@/shared/ui/snackbar/snackbar';
 
 const ERROR_MESSAGE = 'Failed to load games';
 const AUTOPLAY_DELAY = 4000;
 const SWIPE_DISTANCE = 100;
+const RETRY_SUCCESS_MESSAGE = 'Games are loaded';
+const EMPTY_MESSAGE = 'There are no games yet';
 
 class NewGamesSection extends BaseComponent<HTMLElement> {
   private api = new MinigamesApi();
@@ -102,12 +106,11 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
     this.loadGames();
   }
 
-  private async loadGames(): Promise<void> {
+  private async loadGames(isRetry = false): Promise<void> {
     this.showSkeleton();
 
     try {
-      // const games = await this.api.getFeaturedGames();
-      const games: GameDto[] = [];
+      const games = await this.api.getFeaturedGames();
 
       if (games.length === 0) {
         this.showEmptyState();
@@ -115,14 +118,13 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
       }
 
       this.showSlides(games);
-    } catch {
-      const message = new BaseComponent({
-        tag: 'li',
-        className: styles.message,
-        text: ERROR_MESSAGE,
-      });
 
-      this.track.append(message);
+      if (isRetry) {
+        snackbar.showSuccess(RETRY_SUCCESS_MESSAGE);
+      }
+    } catch {
+      this.showError();
+      snackbar.showError(ERROR_MESSAGE);
     }
   }
 
@@ -154,7 +156,19 @@ class NewGamesSection extends BaseComponent<HTMLElement> {
     this.clear();
     this.track.addClass(styles.hidden);
 
-    this.emptyState.append(new EmptyState({ text: ERROR_MESSAGE }));
+    this.emptyState.append(new EmptyState({ text: EMPTY_MESSAGE }));
+  }
+
+  private showError(): void {
+    this.clear();
+    this.track.addClass(styles.hidden);
+
+    this.emptyState.append(
+      new ErrorBanner({
+        text: ERROR_MESSAGE,
+        onRetry: () => this.loadGames(true),
+      })
+    );
   }
 
   private showSlides(games: GameDto[]): void {
