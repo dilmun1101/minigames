@@ -13,5 +13,6 @@ export interface RouteProp {
 
 export const routes: RouteProp[] = [
   { path: ROUTES.HOME, page: HomePage },
+  { path: ROUTES.HOME_PAGE, page: HomePage },
   { path: ROUTES.LIBRARY, page: LibraryPage },
 ];
