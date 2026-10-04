@@ -18,11 +18,13 @@ class Header extends BaseComponent<HTMLElement> {
     const burgerButton = new BurgerButton({
       onClick: () => mobileMenu.open(),
     });
+    const openAuthDialog = (): void => {
+      mobileMenu.close();
+      authDialog.open();
+    };
     const mobileMenu = new MobileMenu({
-      onAuthButtonClick: () => {
-        mobileMenu.close();
-        authDialog.open();
-      },
+      onLoginClick: openAuthDialog,
+      onSignUpClick: openAuthDialog,
     });
 
     const actionsContainer = new BaseComponent(
