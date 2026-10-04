@@ -1,17 +1,22 @@
 import BaseComponent from '@/shared/lib/base-component/base-component';
 import Logo from '@/shared/ui/logo/logo';
 import NavLink from '@/shared/ui/nav-link/nav-link';
-import { ROUTES } from '@/shared/constants/routes';
 import CloseButton from './ui/close-button/close-button';
 import styles from './mobile-menu.module.scss';
 import Button from '@/shared/ui/button/button';
+import { NAV_ITEMS } from '@/shared/constants/nav-items';
+import { activePath } from '@/shared/lib/active-path/active-path';
+import urlState from '@/shared/lib/url-state/url-state';
 
 interface MobileMenuProps {
-  onAuthButtonClick: () => void;
+  onLoginClick: () => void;
+  onSignUpClick: () => void;
 }
 
 class MobileMenu extends BaseComponent<HTMLDivElement> {
-  constructor({ onAuthButtonClick }: MobileMenuProps) {
+  private links: NavLink[] = [];
+
+  constructor({ onLoginClick, onSignUpClick }: MobileMenuProps) {
     const logo = new Logo();
     const closeButton = new CloseButton();
 
@@ -24,82 +29,10 @@ class MobileMenu extends BaseComponent<HTMLDivElement> {
       closeButton
     );
 
-    const currentPath = window.location.pathname;
-
-    const homeLink = new NavLink({
-      href: ROUTES.HOME,
-      text: 'Home',
-      className:
-        ROUTES.HOME === currentPath
-          ? [styles.link, styles.linkActive]
-          : styles.link,
-    });
-
-    const libraryLink = new NavLink({
-      href: ROUTES.LIBRARY,
-      text: 'Library',
-      className:
-        ROUTES.LIBRARY === currentPath
-          ? [styles.link, styles.linkActive]
-          : styles.link,
-    });
-
-    const tournamentsLink = new NavLink({
-      href: ROUTES.HOME,
-      text: 'Tournaments',
-      className:
-        ROUTES.TOURNAMENTS === currentPath
-          ? [styles.link, styles.linkActive]
-          : styles.link,
-    });
-
-    const communityLink = new NavLink({
-      href: ROUTES.HOME,
-      text: 'Community',
-      className:
-        ROUTES.COMMUNITY === currentPath
-          ? [styles.link, styles.linkActive]
-          : styles.link,
-    });
-
     const list = new BaseComponent<HTMLUListElement>({
       tag: 'ul',
       className: styles.list,
     });
-
-    const homeItem = new BaseComponent<HTMLLIElement>(
-      {
-        tag: 'li',
-        className: styles.item,
-      },
-      homeLink
-    );
-
-    const libraryItem = new BaseComponent<HTMLLIElement>(
-      {
-        tag: 'li',
-        className: styles.item,
-      },
-      libraryLink
-    );
-
-    const tournamentsItem = new BaseComponent<HTMLLIElement>(
-      {
-        tag: 'li',
-        className: styles.item,
-      },
-      tournamentsLink
-    );
-
-    const communityItem = new BaseComponent<HTMLLIElement>(
-      {
-        tag: 'li',
-        className: styles.item,
-      },
-      communityLink
-    );
-
-    list.append(homeItem, libraryItem, tournamentsItem, communityItem);
 
     const nav = new BaseComponent<HTMLElement>(
       {
@@ -140,9 +73,33 @@ class MobileMenu extends BaseComponent<HTMLDivElement> {
       actionsButtons
     );
 
+    NAV_ITEMS.forEach((navItem) => {
+      const link = new NavLink({
+        href: navItem.href,
+        text: navItem.text,
+        className: styles.link,
+      });
+
+      const item = new BaseComponent<HTMLLIElement>(
+        {
+          tag: 'li',
+          className: styles.item,
+        },
+        link
+      );
+
+      this.links.push(link);
+      list.append(item);
+    });
+
     closeButton.node.addEventListener('click', () => this.close());
-    loginButton.onClick(onAuthButtonClick);
-    signUpButton.onClick(onAuthButtonClick);
+    loginButton.onClick(onLoginClick);
+    signUpButton.onClick(onSignUpClick);
+
+    nav.node.addEventListener('click', () => this.close());
+
+    urlState.onChange(() => this.showActiveLink());
+    this.showActiveLink();
 
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') {
@@ -157,6 +114,14 @@ class MobileMenu extends BaseComponent<HTMLDivElement> {
 
   public close(): void {
     this.removeClass(styles.open);
+  }
+
+  private showActiveLink(): void {
+    this.links.forEach((link, index) => {
+      const isActive = activePath(NAV_ITEMS[index].path);
+
+      link.node.classList.toggle(styles.linkActive, isActive);
+    });
   }
 }
 
