@@ -1,74 +1,18 @@
 import BaseComponent from '../../shared/lib/base-component/base-component';
 import NavLink from '../../shared/ui/nav-link/nav-link';
-import { ROUTES } from '../../shared/constants/routes';
 import styles from './navigation.module.scss';
+import { activePath } from '@/shared/lib/active-path/active-path';
+import urlState from '@/shared/lib/url-state/url-state';
+import { NAV_ITEMS } from '@/shared/constants/nav-items';
 
 class Navigation extends BaseComponent<HTMLElement> {
+  private links: NavLink[] = [];
+
   constructor() {
-    const currentPath = window.location.pathname;
-
-    const homeLink = new NavLink({
-      href: ROUTES.HOME,
-      text: 'Home',
-      className: ROUTES.HOME === currentPath ? styles.linkActive : [],
-    });
-
-    const libraryLink = new NavLink({
-      href: ROUTES.LIBRARY,
-      text: 'Library',
-      className: ROUTES.LIBRARY === currentPath ? styles.linkActive : [],
-    });
-
-    const tournamentsLink = new NavLink({
-      href: ROUTES.HOME,
-      text: 'Tournaments',
-      className: ROUTES.TOURNAMENTS === currentPath ? styles.linkActive : [],
-    });
-
-    const communityLink = new NavLink({
-      href: ROUTES.HOME,
-      text: 'Community',
-      className: ROUTES.COMMUNITY === currentPath ? styles.linkActive : [],
-    });
-
     const list = new BaseComponent<HTMLUListElement>({
       tag: 'ul',
       className: styles.list,
     });
-
-    const homeItem = new BaseComponent<HTMLLIElement>(
-      {
-        tag: 'li',
-        className: styles.item,
-      },
-      homeLink
-    );
-
-    const libraryItem = new BaseComponent<HTMLLIElement>(
-      {
-        tag: 'li',
-        className: styles.item,
-      },
-      libraryLink
-    );
-
-    const tournamentsItem = new BaseComponent<HTMLLIElement>(
-      {
-        tag: 'li',
-        className: styles.item,
-      },
-      tournamentsLink
-    );
-
-    const communityItem = new BaseComponent<HTMLLIElement>(
-      {
-        tag: 'li',
-        className: styles.item,
-      },
-      communityLink
-    );
-
-    list.append(homeItem, libraryItem, tournamentsItem, communityItem);
 
     super(
       {
@@ -77,6 +21,35 @@ class Navigation extends BaseComponent<HTMLElement> {
       },
       list
     );
+
+    NAV_ITEMS.forEach((navItem) => {
+      const link = new NavLink({
+        href: navItem.href,
+        text: navItem.text,
+      });
+
+      const item = new BaseComponent<HTMLLIElement>(
+        {
+          tag: 'li',
+          className: styles.item,
+        },
+        link
+      );
+
+      this.links.push(link);
+      list.append(item);
+    });
+
+    urlState.onChange(() => this.showActiveLink());
+    this.showActiveLink();
+  }
+
+  private showActiveLink(): void {
+    this.links.forEach((link, index) => {
+      const isActive = activePath(NAV_ITEMS[index].path);
+
+      link.node.classList.toggle(styles.linkActive, isActive);
+    });
   }
 }
 
