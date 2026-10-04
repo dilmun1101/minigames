@@ -16,6 +16,12 @@ const FIRST_PAGE = 1;
 const ERROR_MESSAGE = 'Failed to load games';
 const RETRY_SUCCESS_MESSAGE = 'Games are loaded';
 const EMPTY_MESSAGE = 'There are no games yet';
+const NO_FILTER = '';
+
+interface LibraryFilters {
+  category: string;
+  sort: string;
+}
 
 class LibraryGames extends BaseComponent<HTMLElement> {
   private api = new MinigamesApi();
@@ -25,6 +31,9 @@ class LibraryGames extends BaseComponent<HTMLElement> {
   private emptyState: BaseComponent;
   private currentPage = FIRST_PAGE;
   private totalPages = NO_PAGES;
+  private category = NO_FILTER;
+  private sort = NO_FILTER;
+  private requestNumber = 0;
 
   constructor() {
     const list = new BaseComponent({
@@ -58,16 +67,37 @@ class LibraryGames extends BaseComponent<HTMLElement> {
     this.gameDetails = gameDetails;
     this.pagination = pagination;
     this.emptyState = emptyState;
+  }
 
+  public showFilters({ category, sort }: LibraryFilters): void {
+    if (category === this.category && sort === this.sort) {
+      return;
+    }
+
+    this.category = category;
+    this.sort = sort;
+
+    this.totalPages = NO_PAGES;
     this.loadPage(FIRST_PAGE);
   }
 
   private async loadPage(page: number, isRetry = false): Promise<void> {
     this.currentPage = page;
+    this.requestNumber += 1;
+
+    const requestNumber = this.requestNumber;
     this.showSkeleton();
 
     try {
-      const gamesPage = await this.api.getGamesPage(page);
+      const gamesPage = await this.api.getGamesPage({
+        page,
+        category: this.category,
+        sort: this.sort,
+      });
+
+      if (requestNumber !== this.requestNumber) {
+        return;
+      }
 
       if (gamesPage.games.length === 0) {
         this.showEmptyState();
@@ -81,6 +111,10 @@ class LibraryGames extends BaseComponent<HTMLElement> {
         snackbar.showSuccess(RETRY_SUCCESS_MESSAGE);
       }
     } catch {
+      if (requestNumber !== this.requestNumber) {
+        return;
+      }
+
       this.showError();
       snackbar.showError(ERROR_MESSAGE);
     }

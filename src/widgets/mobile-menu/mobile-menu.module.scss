@@ -6,6 +6,7 @@
 $menu-transition: 0.5s;
 $link-line-height: 22px;
 $border-width: 1px;
+$z-index: 99;
 
 .mobileMenu {
   position: fixed;
@@ -15,6 +16,7 @@ $border-width: 1px;
   padding: size.$size-3;
   background-color: colors.$bg-footer;
   visibility: hidden;
+  z-index: $z-index;
   transform: translateY(-100%);
   transition:
     transform $menu-transition,

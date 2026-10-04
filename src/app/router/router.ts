@@ -1,11 +1,14 @@
-import { routes, type RouteProp } from './routes';
-import { ROUTES } from '../../shared/constants/routes';
+import { routes, type RouteProp, type RenderProp } from './routes';
+import { ROUTES } from '@/shared/constants/routes';
 import urlState from '@/shared/lib/url-state/url-state';
 
 const LINK_START = '/';
+const NOT_FOUND_TEXT = 'Page not found';
 
 class Router {
   private root: HTMLElement;
+  private path = '';
+  private page: RenderProp | null = null;
 
   constructor(root: HTMLElement) {
     this.root = root;
@@ -44,17 +47,34 @@ class Router {
 
   public render(): void {
     const path = this.getCurrentPath();
+
+    if (path === this.path && this.page) {
+      if (this.page.update) {
+        this.page.update();
+      }
+
+      return;
+    }
+
     const route = this.findRoute(path);
 
+    this.path = path;
+    this.root.replaceChildren();
+
     if (!route) {
-      this.root.innerHTML = `Page not found`;
+      this.page = null;
+      this.root.textContent = NOT_FOUND_TEXT;
       return;
     }
 
     const page = new route.page();
 
-    this.root.innerHTML = '';
+    this.page = page;
     this.root.append(page.render());
+
+    if (page.update) {
+      page.update();
+    }
   }
 
   public init(): void {

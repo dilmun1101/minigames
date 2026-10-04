@@ -5,13 +5,18 @@ import type { CategoryDto } from '@/shared/api/types/types';
 import CategoryChip from './ui/category-chip/category-chip';
 import SortSelect from './ui/sort-select/sort-select';
 import { DEFAULT_SORT, SORT_OPTIONS } from './model/filters';
+import urlState from '@/shared/lib/url-state/url-state';
+import { URL_PARAMS } from '@/shared/constants/url-params';
 
 const ERROR_MESSAGE = 'Failed to load categories';
+const NO_CATEGORY = '';
 
 class FilterSortBar extends BaseComponent<HTMLElement> {
   private api = new MinigamesApi();
   private chipsList: BaseComponent;
   private chips: CategoryChip[] = [];
+  private categories: CategoryDto[] = [];
+  private category = NO_CATEGORY;
 
   constructor() {
     const chipsList = new BaseComponent({
@@ -37,11 +42,17 @@ class FilterSortBar extends BaseComponent<HTMLElement> {
     this.loadCategories();
   }
 
+  public showCategory(category: string): void {
+    this.category = category;
+    this.showActiveChip();
+  }
+
   private async loadCategories(): Promise<void> {
     try {
-      const categories = await this.api.getCategories();
+      this.categories = await this.api.getCategories();
 
-      this.showCategories(categories);
+      this.showCategories();
+      this.showActiveChip();
     } catch {
       const message = new BaseComponent({
         tag: 'li',
@@ -53,16 +64,15 @@ class FilterSortBar extends BaseComponent<HTMLElement> {
     }
   }
 
-  private showCategories(categories: CategoryDto[]): void {
-    for (let i = 0; i < categories.length; i++) {
-      const category = categories[i];
+  private showCategories(): void {
+    for (let i = 0; i < this.categories.length; i++) {
+      const category = this.categories[i];
 
       const chip = new CategoryChip({
         text: category.label,
-        isActive: category.isDefault,
       });
 
-      chip.onClick(() => this.selectChip(chip));
+      chip.onClick(() => this.changeCategory(category.slug));
       this.chips.push(chip);
 
       const item = new BaseComponent(
@@ -77,10 +87,22 @@ class FilterSortBar extends BaseComponent<HTMLElement> {
     }
   }
 
-  private selectChip(selected: CategoryChip): void {
-    this.chips.forEach((chip) => {
-      chip.addActive(chip === selected);
+  private showActiveChip(): void {
+    this.chips.forEach((chip, index) => {
+      chip.addActive(this.isActive(this.categories[index]));
     });
+  }
+
+  private isActive(category: CategoryDto): boolean {
+    if (this.category === NO_CATEGORY) {
+      return category.isDefault;
+    }
+
+    return category.slug === this.category;
+  }
+
+  private changeCategory(slug: string): void {
+    urlState.setParams({ [URL_PARAMS.CATEGORY]: slug });
   }
 }
 
