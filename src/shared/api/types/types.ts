@@ -7,6 +7,12 @@ export interface ApiPageResponse<T> {
   meta: PageMetaDto;
 }
 
+export interface GamesPageProps {
+  page: number;
+  category: string;
+  sort: string;
+}
+
 export interface PageMetaDto {
   page: number;
   limit: number;

@@ -9,6 +9,7 @@ import type {
   CommentDto,
   GameDetailsDto,
   LeaderboardPlayerDto,
+  GamesPageProps,
 } from '../types/types';
 
 const GAMES = 'games';
@@ -16,6 +17,10 @@ const LEADERBOARD = 'leaderboard';
 const CATEGORIES = 'categories';
 const FEATURED_GAMES = `${GAMES}?featured=true`;
 const COMMENTS = 'comments';
+const LIMIT_PARAM = 'limit';
+const PAGE_PARAM = 'page';
+const CATEGORY_PARAM = 'category';
+const SORT_PARAM = 'sort';
 
 export const GAMES_ON_PAGE = 6;
 
@@ -28,10 +33,21 @@ class MinigamesApi {
     return response.data.map((game) => this.addImageUrl(game));
   }
 
-  public async getGamesPage(page: number): Promise<GamesPage> {
-    const path = `${GAMES}?limit=${GAMES_ON_PAGE}&page=${page}`;
-    const response =
-      await this.backend.getJson<ApiPageResponse<GameDto[]>>(path);
+  public async getGamesPage({
+    page,
+    category,
+    sort,
+  }: GamesPageProps): Promise<GamesPage> {
+    const search = new URLSearchParams({
+      [LIMIT_PARAM]: String(GAMES_ON_PAGE),
+      [PAGE_PARAM]: String(page),
+      [CATEGORY_PARAM]: category,
+      [SORT_PARAM]: sort,
+    });
+
+    const response = await this.backend.getJson<ApiPageResponse<GameDto[]>>(
+      `${GAMES}?${search.toString()}`
+    );
 
     return {
       games: response.data.map((game) => this.addImageUrl(game)),
