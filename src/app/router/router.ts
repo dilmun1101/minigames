@@ -1,9 +1,9 @@
 import { routes, type RouteProp, type RenderProp } from './routes';
 import { ROUTES } from '@/shared/constants/routes';
 import urlState from '@/shared/lib/url-state/url-state';
+import NotFoundPage from '@/pages/not-found-page/not-found-page';
 
 const LINK_START = '/';
-const NOT_FOUND_TEXT = 'Page not found';
 
 class Router {
   private root: HTMLElement;
@@ -61,13 +61,7 @@ class Router {
     this.path = path;
     this.root.replaceChildren();
 
-    if (!route) {
-      this.page = null;
-      this.root.textContent = NOT_FOUND_TEXT;
-      return;
-    }
-
-    const page = new route.page();
+    const page: RenderProp = route ? new route.page() : new NotFoundPage();
 
     this.page = page;
     this.root.append(page.render());
