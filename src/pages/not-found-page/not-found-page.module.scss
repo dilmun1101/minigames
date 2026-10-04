@@ -1,0 +1,24 @@
+@use '../../shared/styles/tokens/sizes' as size;
+
+.notFound {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-block: size.$size-15;
+}
+
+.title {
+  text-align: center;
+}
+
+@media (max-width: size.$breakpoint-middle) {
+  .notFound {
+    padding-block: size.$size-10;
+  }
+}
+
+@media (max-width: size.$breakpoint-small) {
+  .notFound {
+    padding-block: size.$size-5;
+  }
+}

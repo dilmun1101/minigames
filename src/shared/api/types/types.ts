@@ -2,6 +2,29 @@ export interface ApiResponse<T> {
   data: T;
 }
 
+export interface ApiPageResponse<T> {
+  data: T;
+  meta: PageMetaDto;
+}
+
+export interface GamesPageProps {
+  page: number;
+  category: string;
+  sort: string;
+}
+
+export interface PageMetaDto {
+  page: number;
+  limit: number;
+  totalItems: number;
+  totalPages: number;
+}
+
+export interface GamesPage {
+  games: GameDto[];
+  totalPages: number;
+}
+
 export interface GameDto {
   slug: string;
   name: string;
@@ -11,7 +34,7 @@ export interface GameDto {
   rating: number;
   likesCount: number;
   cardImage: string;
-  featured: boolean;
+  featured?: boolean;
 }
 
 export interface CategoryDto {

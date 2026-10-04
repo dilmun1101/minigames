@@ -1,13 +1,15 @@
+@use '@/shared/styles/tokens/colors' as colors;
 @use '@/shared/styles/tokens/sizes' as size;
+@use '@/shared/styles/tokens/fonts' as font;
 
 // add tokens for new games section slides
 $card-height-large: 384px;
 $card-height-middle: 280px;
 $card-height-small: 200px;
-$track-gap-small: 6px;
-
+$slide-space: size.$size-05;
+$slide-space-small: 3px;
 $shadow-room: size.$size-05;
-
+$slide-transition: 1s;
 $slide-small-large: 120;
 $slide-medium-large: 288;
 $slide-large-large: 816;
@@ -34,15 +36,26 @@ $slide-large-small: 218;
 
 .track {
   display: flex;
-  gap: size.$size-1;
   height: $card-height-large + $shadow-room;
-  padding: 0 size.$size-1 $shadow-room;
+  padding-inline: $slide-space;
+  padding-bottom: $shadow-room;
+  list-style: none;
+  cursor: grab;
+  user-select: none;
+}
+
+.track:active {
+  cursor: grabbing;
 }
 
 .slide {
   flex-basis: 0;
+  flex-grow: 0;
   min-width: 0;
-  list-style: none;
+  padding-inline: $slide-space;
+  transition:
+    flex-grow $slide-transition,
+    padding-inline $slide-transition;
 }
 
 .slideSmall {
@@ -55,6 +68,34 @@ $slide-large-small: 218;
 
 .slideLarge {
   flex-grow: $slide-large-large;
+}
+
+.slideHidden {
+  padding-inline: 0;
+}
+
+.slideHidden > * {
+  display: none;
+}
+
+.message {
+  color: colors.$on-bg;
+  font-size: font.$body-large;
+  font-weight: font.$medium;
+  line-height: normal;
+}
+
+.skeleton {
+  border: size.$border;
+  border-radius: size.$corner-extra-large;
+}
+
+.emptyState:not(:empty) {
+  padding-bottom: $shadow-room;
+}
+
+.hidden {
+  display: none;
 }
 
 @media (max-width: size.$breakpoint-middle) {
@@ -71,6 +112,11 @@ $slide-large-small: 218;
   }
 
   .slideSmall {
+    flex-grow: 0;
+    padding-inline: 0;
+  }
+
+  .slideSmall > * {
     display: none;
   }
 
@@ -80,6 +126,10 @@ $slide-large-small: 218;
 
   .slideLarge {
     flex-grow: $slide-large-middle;
+  }
+
+  .message {
+    font-size: font.$body-medium;
   }
 }
 
@@ -97,9 +147,17 @@ $slide-large-small: 218;
   }
 
   .track {
-    gap: $track-gap-small;
     height: $card-height-small + $shadow-room;
-    padding-inline: size.$size-05;
+    padding-inline: $slide-space-small;
+  }
+
+  .slide {
+    padding-inline: $slide-space-small;
+  }
+
+  .slideHidden,
+  .slideSmall {
+    padding-inline: 0;
   }
 
   .slideMedium {

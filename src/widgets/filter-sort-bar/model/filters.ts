@@ -4,10 +4,11 @@ export interface SortOption {
 }
 
 export const SORT_OPTIONS: SortOption[] = [
-  { value: 'rating-up', label: 'Rating ↑' },
-  { value: 'rating-down', label: 'Rating ↓' },
-  { value: 'name-up', label: 'Name A→Z' },
-  { value: 'name-down', label: 'Name Z→A' },
+  { value: 'rating-asc', label: 'Rating ↑' },
+  { value: 'rating-desc', label: 'Rating ↓' },
+  { value: 'name-asc', label: 'Name A→Z' },
+  { value: 'name-desc', label: 'Name Z→A' },
 ];
 
-export const DEFAULT_SORT = 'rating-down';
+export const DEFAULT_SORT = 'rating-desc';
+export const DEFAULT_CATEGORY = 'all';

@@ -4,6 +4,11 @@
 
 // add tokens for library games section
 $two-columns-width: 1320px;
+$card-row-width: 520px;
+$card-wide-width: 760px;
+$skeleton-height: 349px;
+$skeleton-height-row: 152px;
+$skeleton-height-wide: 200px;
 
 .games {
   padding-inline: size.$size-15;
@@ -21,10 +26,33 @@ $two-columns-width: 1320px;
   min-width: 0;
 }
 
-.message {
-  color: colors.$on-bg;
-  font-size: font.$body-large;
-  font-weight: font.$medium;
+.skeleton {
+  height: $skeleton-height;
+  border: size.$border;
+  border-radius: size.$corner-large;
+  box-shadow: size.$shadow-level-1;
+}
+
+.state:not(:empty) {
+  display: flex;
+  justify-content: center;
+  padding-block: size.$size-5;
+}
+
+.hidden {
+  display: none;
+}
+
+@container (min-width: #{$card-row-width}) {
+  .skeleton {
+    height: $skeleton-height-row;
+  }
+}
+
+@container (min-width: #{$card-wide-width}) {
+  .skeleton {
+    height: $skeleton-height-wide;
+  }
 }
 
 @media (min-width: $two-columns-width) {
@@ -40,6 +68,10 @@ $two-columns-width: 1320px;
 @media (max-width: size.$breakpoint-middle) {
   .games {
     padding-inline: size.$size-5;
+  }
+
+  .state:not(:empty) {
+    padding-block: size.$size-3;
   }
 }
 
