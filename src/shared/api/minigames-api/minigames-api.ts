@@ -2,6 +2,8 @@ import { ASSETS_URL, API_URL } from '../config/config';
 import HttpClient from '../http-client/http-client';
 import type {
   ApiResponse,
+  ApiPageResponse,
+  GamesPage,
   GameDto,
   CategoryDto,
   CommentDto,
@@ -9,22 +11,32 @@ import type {
   LeaderboardPlayerDto,
 } from '../types/types';
 
-const GAMES_JSON = 'all-games-seed.json';
-const LEADERBOARD_JSON = 'leaderboard.json';
-const CATEGORIES_JSON = 'categories.json';
-const FEATURED_GAMES = 'games?featured=true';
+const GAMES = 'games';
+const LEADERBOARD = 'leaderboard';
+const CATEGORIES = 'categories';
+const FEATURED_GAMES = `${GAMES}?featured=true`;
+const COMMENTS = 'comments';
+
+export const GAMES_ON_PAGE = 6;
 
 class MinigamesApi {
   private backend = new HttpClient(API_URL);
 
   public async getGames(): Promise<GameDto[]> {
-    const response =
-      await this.backend.getJson<ApiResponse<GameDto[]>>(GAMES_JSON);
+    const response = await this.backend.getJson<ApiResponse<GameDto[]>>(GAMES);
 
-    return response.data.map((game) => ({
-      ...game,
-      cardImage: this.getImageUrl(game.cardImage),
-    }));
+    return response.data.map((game) => this.addImageUrl(game));
+  }
+
+  public async getGamesPage(page: number): Promise<GamesPage> {
+    const path = `${GAMES}?limit=${GAMES_ON_PAGE}&page=${page}`;
+    const response =
+      await this.backend.getJson<ApiPageResponse<GameDto[]>>(path);
+
+    return {
+      games: response.data.map((game) => this.addImageUrl(game)),
+      totalPages: response.meta.totalPages,
+    };
   }
 
   public async getGame(slug: string): Promise<GameDto | undefined> {
@@ -43,15 +55,12 @@ class MinigamesApi {
     const response =
       await this.backend.getJson<ApiResponse<GameDto[]>>(FEATURED_GAMES);
 
-    return response.data.map((game) => ({
-      ...game,
-      cardImage: this.getImageUrl(game.cardImage),
-    }));
+    return response.data.map((game) => this.addImageUrl(game));
   }
 
   public async getGameDetails(slug: string): Promise<GameDetailsDto> {
     const response = await this.backend.getJson<ApiResponse<GameDetailsDto>>(
-      `game-${slug}.json`
+      `${GAMES}/${slug}`
     );
 
     return {
@@ -62,7 +71,7 @@ class MinigamesApi {
 
   public async getGameComments(slug: string): Promise<CommentDto[]> {
     const response = await this.backend.getJson<ApiResponse<CommentDto[]>>(
-      `comments-${slug}.json`
+      `${GAMES}/${slug}/${COMMENTS}`
     );
 
     return response.data;
@@ -71,7 +80,7 @@ class MinigamesApi {
   public async getTopPlayers(): Promise<LeaderboardPlayerDto[]> {
     const response =
       await this.backend.getJson<ApiResponse<LeaderboardPlayerDto[]>>(
-        LEADERBOARD_JSON
+        LEADERBOARD
       );
 
     return response.data;
@@ -79,7 +88,7 @@ class MinigamesApi {
 
   public async getCategories(): Promise<CategoryDto[]> {
     const response =
-      await this.backend.getJson<ApiResponse<CategoryDto[]>>(CATEGORIES_JSON);
+      await this.backend.getJson<ApiResponse<CategoryDto[]>>(CATEGORIES);
 
     return response.data;
   }
@@ -90,6 +99,13 @@ class MinigamesApi {
     const fileName = parts[lastPart];
 
     return `${ASSETS_URL}/${fileName}`;
+  }
+
+  private addImageUrl(game: GameDto): GameDto {
+    return {
+      ...game,
+      cardImage: this.getImageUrl(game.cardImage),
+    };
   }
 }
 

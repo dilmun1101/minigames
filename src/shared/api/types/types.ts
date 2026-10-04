@@ -2,6 +2,23 @@ export interface ApiResponse<T> {
   data: T;
 }
 
+export interface ApiPageResponse<T> {
+  data: T;
+  meta: PageMetaDto;
+}
+
+export interface PageMetaDto {
+  page: number;
+  limit: number;
+  totalItems: number;
+  totalPages: number;
+}
+
+export interface GamesPage {
+  games: GameDto[];
+  totalPages: number;
+}
+
 export interface GameDto {
   slug: string;
   name: string;
