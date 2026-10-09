@@ -1,0 +1,127 @@
+@use 'sass:color';
+@use '../../styles/tokens/colors' as colors;
+@use '../../styles/tokens/sizes' as size;
+@use '../../styles/tokens/fonts' as font;
+
+$content-width: 420px;
+$dialog-padding: size.$size-3;
+$dialog-padding-small: size.$size-2;
+$close-size: size.$size-4;
+$close-offset: size.$size-05;
+$close-shadow: 2px 2px colors.$on-primary;
+$backdrop: color.change(colors.$on-primary, $alpha: 0.6);
+$transition: 0.5s;
+
+:global(body):has(.modal[open]) {
+  overflow: hidden;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.modal {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: $content-width + $dialog-padding * 2;
+  max-height: 100dvh;
+  margin: auto;
+  padding: $dialog-padding;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: transparent;
+  border: none;
+
+  &::backdrop {
+    background-color: $backdrop;
+  }
+
+  &[open] {
+    display: flex;
+    justify-content: center;
+
+    &,
+    &::backdrop {
+      animation: fade-in $transition both;
+    }
+  }
+
+  &[open].closing {
+    &,
+    &::backdrop {
+      animation: fade-out $transition both;
+    }
+  }
+}
+
+.content {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: size.$size-4;
+  color: colors.$on-primary;
+  background-color: colors.$bg;
+  border: size.$border;
+  border-radius: size.$corner-large;
+  box-shadow: size.$shadow-level-3;
+}
+
+.close {
+  position: absolute;
+  top: $close-offset;
+  right: $close-offset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $close-size;
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  color: colors.$on-primary;
+  background-color: colors.$white;
+  border: size.$border;
+  border-radius: size.$corner-full;
+  box-shadow: $close-shadow;
+  cursor: pointer;
+  transition: background-color $transition;
+
+  > span {
+    font-size: font.$body-large;
+  }
+
+  &:hover {
+    background-color: colors.$surface;
+  }
+
+  &:focus-visible {
+    outline: size.$border-width solid colors.$tertiary;
+    outline-offset: size.$border-width;
+  }
+}
+
+@media (max-width: size.$breakpoint-middle) {
+  .modal {
+    max-width: $content-width + $dialog-padding-small * 2;
+    padding: $dialog-padding $dialog-padding-small;
+  }
+
+  .content {
+    padding: size.$size-3 size.$size-2;
+  }
+}

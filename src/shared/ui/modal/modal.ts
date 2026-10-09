@@ -8,6 +8,7 @@ interface ModalProps {
 class Modal extends BaseComponent<HTMLDialogElement> {
   protected readonly content: BaseComponent<HTMLDivElement>;
   private closeHandlers: (() => void)[] = [];
+  private isClosing = false;
 
   constructor({ className = [] }: ModalProps = {}) {
     const additionalClasses = Array.isArray(className)
@@ -35,6 +36,11 @@ class Modal extends BaseComponent<HTMLDialogElement> {
       }
     });
 
+    this.node.addEventListener('cancel', (event) => {
+      event.preventDefault();
+      this.close();
+    });
+
     this.node.addEventListener('close', () => {
       this.closeHandlers.forEach((handler) => handler());
     });
@@ -45,15 +51,30 @@ class Modal extends BaseComponent<HTMLDialogElement> {
   }
 
   public open(): void {
-    if (!this.node.open) {
-      this.node.showModal();
+    if (this.node.open || this.isClosing) {
+      return;
     }
+
+    this.node.showModal();
   }
 
   public close(): void {
-    if (this.node.open) {
-      this.node.close();
+    if (!this.node.open || this.isClosing) {
+      return;
     }
+
+    this.isClosing = true;
+    this.addClass(styles.closing);
+
+    const animations = this.node.getAnimations();
+
+    void Promise.allSettled(
+      animations.map((animation) => animation.finished)
+    ).then(() => {
+      this.node.close();
+      this.removeClass(styles.closing);
+      this.isClosing = false;
+    });
   }
 
   public onClose(handler: () => void): this {
