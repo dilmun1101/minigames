@@ -67,8 +67,8 @@ class AuthDialog extends Modal {
   private showForms(): void {
     const isLogin = this.mode === DEFAULT_MODE;
 
-    this.loginForm.node.classList.toggle(styles.hidden, !isLogin);
-    this.registerForm.node.classList.toggle(styles.hidden, isLogin);
+    this.loginForm.setHidden(!isLogin);
+    this.registerForm.setHidden(isLogin);
 
     this.tabs.forEach((tab, index) => {
       const isActive = TABS[index].mode === this.mode;

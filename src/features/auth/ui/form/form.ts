@@ -157,6 +157,10 @@ class AuthForm extends BaseComponent<HTMLElement> {
 
     switchButton.node.addEventListener('click', () => onSwitchClick());
   }
+
+  public setHidden(isHidden: boolean): void {
+    this.node.classList.toggle(styles.hidden, isHidden);
+  }
 }
 
 export default AuthForm;

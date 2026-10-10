@@ -16,6 +16,10 @@ $appear-shift: 8px;
   animation: appear $appear-time ease;
 }
 
+.form.hidden {
+  display: none;
+}
+
 .header {
   display: flex;
   flex-direction: column;
@@ -60,7 +64,7 @@ $appear-shift: 8px;
   gap: size.$size-2;
 }
 
-.submit {
+.form .submit {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -91,7 +95,7 @@ $appear-shift: 8px;
   text-transform: uppercase;
 }
 
-.google {
+.form .google {
   display: flex;
   gap: size.$size-2;
   align-items: center;
