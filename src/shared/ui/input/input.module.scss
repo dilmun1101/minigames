@@ -2,10 +2,9 @@
 @use '../../styles/tokens/sizes' as size;
 @use '../../styles/tokens/fonts' as font;
 
-$height: size.$size-6;
-$control-padding: size.$size-2 - size.$border-width;
-$icon-size: 18px;
-$transition: 0.5s;
+// add tokens for input
+$control-height: 48px;
+$icon-size: 20px;
 
 .input {
   display: flex;
@@ -17,43 +16,32 @@ $transition: 0.5s;
   color: colors.$on-primary;
   font-size: font.$body-small;
   font-weight: font.$bold;
-  cursor: pointer;
 }
 
 .control {
   display: flex;
-  align-items: center;
   gap: size.$size-2;
-  height: $height;
-  padding-inline: $control-padding;
-  color: colors.$on-primary;
+  align-items: center;
+  height: $control-height;
+  padding-inline: size.$size-2;
   background-color: colors.$white;
   border: size.$border;
   border-radius: size.$corner-small;
-  transition:
-    background-color $transition,
-    border-color $transition;
+}
 
-  &:hover {
-    background-color: colors.$surface-low;
-  }
-
-  &:focus-within {
-    background-color: colors.$surface;
-  }
+.control:focus-within {
+  background-color: colors.$surface-low;
 }
 
 .icon {
   flex-shrink: 0;
+  color: colors.$on-primary;
   font-size: $icon-size;
-  transition: color $transition;
 }
 
 .field {
-  flex: 1;
+  width: 100%;
   min-width: 0;
-  height: 100%;
-  padding: 0;
   color: colors.$on-primary;
   font-family: inherit;
   font-size: font.$body-small;
@@ -61,57 +49,39 @@ $transition: 0.5s;
   background-color: transparent;
   border: none;
   outline: none;
+}
 
-  &::placeholder {
-    color: colors.$on-bg-low;
-    font-weight: font.$regular;
-  }
+.field::placeholder {
+  color: colors.$on-bg-low;
+  font-weight: font.$regular;
 }
 
 .eyeButton {
   display: flex;
   flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
   padding: 0;
-  color: colors.$on-bg;
+  color: colors.$on-primary;
+  font-size: $icon-size;
   background-color: transparent;
   border: none;
-  border-radius: size.$corner-extra-small;
   cursor: pointer;
-  transition: color $transition;
+}
 
-  > span {
-    font-size: $icon-size + 2px;
-  }
-
-  &:hover {
-    color: colors.$on-primary;
-  }
-
-  &:focus-visible {
-    outline: size.$border-width solid colors.$tertiary;
-    outline-offset: size.$border-width;
-  }
+.error:empty {
+  display: none;
 }
 
 .error {
-  display: none;
   color: colors.$error;
   font-size: font.$label-medium;
   font-weight: font.$medium;
 }
 
-.invalid {
-  .control {
-    border-color: colors.$error;
-  }
+.invalid .control {
+  border-color: colors.$error;
+}
 
-  .icon {
-    color: colors.$error;
-  }
-
-  .error {
-    display: block;
-  }
+.invalid .icon,
+.invalid .eyeButton {
+  color: colors.$error;
 }
