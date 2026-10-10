@@ -1,0 +1,138 @@
+@use '@/shared/styles/tokens/colors' as colors;
+@use '@/shared/styles/tokens/sizes' as size;
+@use '@/shared/styles/tokens/fonts' as font;
+
+// add tokens for auth form
+$submit-height: 52px;
+$google-height: 50px;
+$divider-line: 1px;
+$appear-time: 0.3s;
+$appear-shift: 8px;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: size.$size-3;
+  animation: appear $appear-time ease;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: size.$size-1;
+}
+
+.title {
+  color: colors.$on-primary;
+  font-size: font.$headline-medium;
+  font-weight: font.$bold;
+  line-height: normal;
+}
+
+.description {
+  color: colors.$on-bg;
+  font-size: font.$body-small;
+  font-weight: font.$medium;
+  line-height: normal;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: size.$size-2;
+}
+
+.links {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.forgotLink {
+  color: colors.$on-primary;
+  font-size: font.$body-small;
+  font-weight: font.$bold;
+  line-height: normal;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: size.$size-2;
+}
+
+.submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: $submit-height;
+  font-size: font.$body-medium;
+  box-shadow: size.$shadow-level-1;
+}
+
+.divider {
+  display: flex;
+  gap: size.$size-2;
+  align-items: center;
+}
+
+.divider::before,
+.divider::after {
+  flex-grow: 1;
+  height: $divider-line;
+  background-color: colors.$outline;
+  content: '';
+}
+
+.dividerText {
+  color: colors.$on-bg;
+  font-size: font.$label-medium;
+  font-weight: font.$bold;
+  line-height: normal;
+  text-transform: uppercase;
+}
+
+.google {
+  display: flex;
+  gap: size.$size-2;
+  align-items: center;
+  justify-content: center;
+  height: $google-height;
+  font-size: font.$body-medium;
+  text-transform: none;
+  background-color: colors.$white;
+}
+
+.footer {
+  display: flex;
+  gap: size.$size-05;
+  align-items: center;
+  justify-content: center;
+  color: colors.$on-bg;
+  font-size: font.$body-small;
+  font-weight: font.$medium;
+  line-height: normal;
+}
+
+.switchLink {
+  padding: 0;
+  color: colors.$on-primary;
+  font-family: inherit;
+  font-size: font.$body-small;
+  font-weight: font.$bold;
+  text-decoration: underline;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY($appear-shift);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
