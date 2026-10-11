@@ -4,6 +4,9 @@ import unicorn from 'eslint-plugin-unicorn';
 
 export default [
   {
+    ignores: ['coverage/**', 'src/**/*.test.ts'],
+  },
+  {
     linterOptions: {
       noInlineConfig: true,
     },
