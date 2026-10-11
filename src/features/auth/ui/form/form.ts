@@ -25,6 +25,7 @@ interface FieldEntry {
 class AuthForm extends BaseComponent<HTMLElement> {
   private entries: FieldEntry[];
   private submitButton: Button;
+  private touchedIds = new Set<string>();
 
   constructor({ form, onSwitchClick }: AuthFormComponentProps) {
     const title = new BaseComponent({
@@ -174,6 +175,9 @@ class AuthForm extends BaseComponent<HTMLElement> {
 
     this.node.addEventListener('submit', (event) => event.preventDefault());
 
+    this.node.addEventListener('input', (event) => this.onFieldEvent(event));
+    this.node.addEventListener('focusout', (event) => this.onFieldEvent(event));
+
     switchButton.node.addEventListener('click', () => onSwitchClick());
 
     this.showSubmitState();
@@ -181,6 +185,50 @@ class AuthForm extends BaseComponent<HTMLElement> {
 
   public setHidden(isHidden: boolean): void {
     this.node.classList.toggle(styles.hidden, isHidden);
+  }
+
+  private onFieldEvent(event: Event): void {
+    const target = event.target;
+
+    if (!(target instanceof HTMLInputElement)) {
+      return;
+    }
+
+    const entry = this.entries.find((item) => item.id === target.id);
+
+    if (!entry) {
+      return;
+    }
+
+    this.touchedIds.add(entry.id);
+    this.showFieldError(entry);
+
+    if (entry.rule === 'password') {
+      this.showConfirmError();
+    }
+
+    this.showSubmitState();
+  }
+
+  private showFieldError(entry: FieldEntry): void {
+    if (!this.touchedIds.has(entry.id)) {
+      entry.input.clearError();
+      return;
+    }
+
+    entry.input.setError(this.getError(entry));
+  }
+
+  private showConfirmError(): void {
+    const confirmEntry = this.entries.find(
+      (item) => item.rule === 'confirmPassword'
+    );
+
+    if (!confirmEntry) {
+      return;
+    }
+
+    this.showFieldError(confirmEntry);
   }
 
   private showSubmitState(): void {
