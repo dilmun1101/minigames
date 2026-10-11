@@ -1,0 +1,85 @@
+@use '../../styles/tokens/colors' as colors;
+@use '../../styles/tokens/sizes' as size;
+
+// add tokens for modal
+$show-time: 0.3s;
+$start-shift: 16px;
+$start-scale: 0.96;
+$backdrop-shade: 0.5;
+$screen-gap: size.$size-4;
+
+.modal {
+  max-width: calc(100vw - #{$screen-gap});
+  max-height: calc(100dvh - #{$screen-gap});
+  margin: auto;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+}
+
+.modal[open] {
+  display: flex;
+  animation: show-modal $show-time ease;
+}
+
+.modal[open]::backdrop {
+  background-color: rgba(colors.$on-primary, $backdrop-shade);
+  animation: show-backdrop $show-time ease;
+}
+
+.modal[open].closing {
+  animation: hide-modal $show-time ease forwards;
+}
+
+.modal[open].closing::backdrop {
+  animation: hide-backdrop $show-time ease forwards;
+}
+
+.content {
+  max-width: 100%;
+  overflow-y: auto;
+}
+
+@keyframes show-modal {
+  from {
+    opacity: 0;
+    transform: translateY($start-shift) scale($start-scale);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hide-modal {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY($start-shift) scale($start-scale);
+  }
+}
+
+@keyframes show-backdrop {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hide-backdrop {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
