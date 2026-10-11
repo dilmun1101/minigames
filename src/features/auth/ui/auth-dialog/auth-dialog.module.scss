@@ -2,20 +2,52 @@
 @use '../../../../shared/styles/tokens/sizes' as size;
 @use '../../../../shared/styles/tokens/fonts' as font;
 
-.authDialog {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  display: none;
-  padding: size.$size-3;
-  color: colors.$on-primary;
-  font-size: font.$body-medium;
-  font-weight: font.$bold;
-  background-color: colors.$surface-low;
+// add tokens for auth dialog
+$dialog-width: 420px;
+$dialog-padding: size.$size-4 - size.$border-width;
+$tabs-height: 48px;
+
+.dialog {
+  display: flex;
+  flex-direction: column;
+  gap: size.$size-3;
+  width: $dialog-width;
+  max-width: 100%;
+  padding: $dialog-padding;
+  background-color: colors.$bg;
   border: size.$border;
-  border-radius: size.$corner-medium;
+  border-radius: size.$corner-extra-large;
+  box-shadow: size.$shadow-level-3;
 }
 
-.open {
-  display: block;
+.tabs {
+  display: flex;
+  flex-shrink: 0;
+  height: $tabs-height;
+  overflow: hidden;
+  border: size.$border;
+  border-radius: size.$corner-small;
+}
+
+.tab {
+  flex: 1 1 50%;
+  color: colors.$on-primary;
+  font-family: inherit;
+  font-size: font.$body-medium;
+  font-weight: font.$bold;
+  background-color: colors.$white;
+  border: none;
+  cursor: pointer;
+}
+
+.tabActive {
+  color: colors.$white;
+  background-color: colors.$bg-footer-low;
+}
+
+@media (max-width: size.$breakpoint-small) {
+  .dialog {
+    padding: size.$size-3 - size.$border-width;
+    border-radius: size.$corner-large;
+  }
 }

@@ -6,6 +6,7 @@ import styles from './header.module.scss';
 import BurgerButton from './ui/burger-menu-button/burger-menu-button';
 import AuthDialog from '@/features/auth/ui/auth-dialog/auth-dialog';
 import MobileMenu from '../mobile-menu/mobile-menu';
+import type { AuthMode } from '@/features/auth/model/forms';
 
 class Header extends BaseComponent<HTMLElement> {
   constructor() {
@@ -13,18 +14,19 @@ class Header extends BaseComponent<HTMLElement> {
     const navigation = new Navigation();
     const authDialog = new AuthDialog();
     const actions = new HeaderActionsButtons({
-      onSignInClick: () => authDialog.toggle(),
+      onLoginClick: () => authDialog.open('login'),
+      onSignUpClick: () => authDialog.open('register'),
     });
     const burgerButton = new BurgerButton({
       onClick: () => mobileMenu.open(),
     });
-    const openAuthDialog = (): void => {
+    const openAuthDialog = (mode: AuthMode): void => {
       mobileMenu.close();
-      authDialog.open();
+      authDialog.open(mode);
     };
     const mobileMenu = new MobileMenu({
-      onLoginClick: openAuthDialog,
-      onSignUpClick: openAuthDialog,
+      onLoginClick: () => openAuthDialog('login'),
+      onSignUpClick: () => openAuthDialog('register'),
     });
 
     const actionsContainer = new BaseComponent(

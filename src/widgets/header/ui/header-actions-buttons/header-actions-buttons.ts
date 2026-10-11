@@ -1,13 +1,14 @@
-import BaseComponent from '../../../../shared/lib/base-component/base-component';
-import Button from '../../../../shared/ui/button/button';
+import BaseComponent from '@/shared/lib/base-component/base-component';
+import Button from '@/shared/ui/button/button';
 import styles from './header-actions-buttons.module.scss';
 
 interface HeaderActionsButtonsProps {
-  onSignInClick: () => void;
+  onLoginClick: () => void;
+  onSignUpClick: () => void;
 }
 
 class HeaderActionsButtons extends BaseComponent<HTMLDivElement> {
-  constructor({ onSignInClick }: HeaderActionsButtonsProps) {
+  constructor({ onLoginClick, onSignUpClick }: HeaderActionsButtonsProps) {
     const loginButton = new Button({
       text: 'Log in',
       className: styles.loginButton,
@@ -29,7 +30,8 @@ class HeaderActionsButtons extends BaseComponent<HTMLDivElement> {
       signUpButton
     );
 
-    loginButton.onClick(onSignInClick);
+    loginButton.onClick(onLoginClick);
+    signUpButton.onClick(onSignUpClick);
   }
 }
 
