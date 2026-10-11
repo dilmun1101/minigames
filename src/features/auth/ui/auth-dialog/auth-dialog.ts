@@ -83,8 +83,20 @@ class AuthDialog extends Modal {
       return;
     }
 
+    const isNewMode = mode !== this.mode;
+    const wasClosed = !this.isOpened();
+
     this.showMode(mode);
     super.open();
+
+    if (isNewMode || wasClosed) {
+      this.resetForms();
+    }
+  }
+
+  private resetForms(): void {
+    this.loginForm.reset();
+    this.registerForm.reset();
   }
 
   private getUrlMode(): AuthMode | null {

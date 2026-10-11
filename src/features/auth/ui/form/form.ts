@@ -187,6 +187,12 @@ class AuthForm extends BaseComponent<HTMLElement> {
     this.node.classList.toggle(styles.hidden, isHidden);
   }
 
+  public reset(): void {
+    this.entries.forEach((entry) => entry.input.reset());
+    this.touchedIds.clear();
+    this.showSubmitState();
+  }
+
   private onFieldEvent(event: Event): void {
     const target = event.target;
 
