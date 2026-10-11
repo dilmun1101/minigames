@@ -1,7 +1,10 @@
 export type AuthMode = 'login' | 'register';
 
+import type { ValidationRule } from './validation';
+
 export interface AuthFieldProps {
   name: string;
+  rule: ValidationRule;
   label: string;
   type: 'text' | 'email' | 'password';
   placeholder: string;
@@ -29,6 +32,7 @@ export const LOGIN_FORM: AuthFormProps = {
   fields: [
     {
       name: 'email',
+      rule: 'email',
       label: 'Email Address',
       type: 'email',
       placeholder: 'e.g. alex@minigames.com',
@@ -37,6 +41,7 @@ export const LOGIN_FORM: AuthFormProps = {
     },
     {
       name: 'password',
+      rule: 'loginPassword',
       label: 'Password',
       type: 'password',
       placeholder: '••••••••',
@@ -59,6 +64,7 @@ export const REGISTER_FORM: AuthFormProps = {
   fields: [
     {
       name: 'username',
+      rule: 'username',
       label: 'Username',
       type: 'text',
       placeholder: 'e.g. CozyGamer_99',
@@ -67,6 +73,7 @@ export const REGISTER_FORM: AuthFormProps = {
     },
     {
       name: 'email',
+      rule: 'email',
       label: 'Email Address',
       type: 'email',
       placeholder: 'your.email@domain.com',
@@ -75,15 +82,17 @@ export const REGISTER_FORM: AuthFormProps = {
     },
     {
       name: 'password',
+      rule: 'password',
       label: 'Password',
       type: 'password',
-      placeholder: 'Min. 8 characters',
+      placeholder: 'Min. 6 characters',
       icon: 'lock',
       autocomplete: 'new-password',
       revealable: true,
     },
     {
       name: 'confirm-password',
+      rule: 'confirmPassword',
       label: 'Confirm Password',
       type: 'password',
       placeholder: 'Repeat your password',

@@ -4,6 +4,8 @@ import Button from '@/shared/ui/button/button';
 import Input from '@/shared/ui/input/input';
 import Icon from '@/shared/ui/icon/icon';
 import type { AuthFormProps } from '../../model/forms';
+import type { ValidationRule } from '../../model/validation';
+import { getFieldError, NO_ERROR } from '../../model/validation';
 
 const FORGOT_TEXT = 'Forgot Password?';
 const DIVIDER_TEXT = 'or';
@@ -14,7 +16,16 @@ interface AuthFormComponentProps {
   onSwitchClick: () => void;
 }
 
+interface FieldEntry {
+  id: string;
+  rule: ValidationRule;
+  input: Input;
+}
+
 class AuthForm extends BaseComponent<HTMLElement> {
+  private entries: FieldEntry[];
+  private submitButton: Button;
+
   constructor({ form, onSwitchClick }: AuthFormComponentProps) {
     const title = new BaseComponent({
       tag: 'h2',
@@ -42,19 +53,24 @@ class AuthForm extends BaseComponent<HTMLElement> {
       className: styles.fields,
     });
 
+    const entries: FieldEntry[] = [];
+
     for (const field of form.fields) {
-      fields.append(
-        new Input({
-          id: `${form.mode}-${field.name}`,
-          name: field.name,
-          label: field.label,
-          type: field.type,
-          placeholder: field.placeholder,
-          icon: field.icon,
-          autocomplete: field.autocomplete,
-          revealable: field.revealable,
-        })
-      );
+      const id = `${form.mode}-${field.name}`;
+
+      const input = new Input({
+        id,
+        name: field.name,
+        label: field.label,
+        type: field.type,
+        placeholder: field.placeholder,
+        icon: field.icon,
+        autocomplete: field.autocomplete,
+        revealable: field.revealable,
+      });
+
+      entries.push({ id, rule: field.rule, input });
+      fields.append(input);
     }
 
     if (form.hasForgotLink) {
@@ -153,13 +169,44 @@ class AuthForm extends BaseComponent<HTMLElement> {
       footer
     );
 
+    this.entries = entries;
+    this.submitButton = submitButton;
+
     this.node.addEventListener('submit', (event) => event.preventDefault());
 
     switchButton.node.addEventListener('click', () => onSwitchClick());
+
+    this.showSubmitState();
   }
 
   public setHidden(isHidden: boolean): void {
     this.node.classList.toggle(styles.hidden, isHidden);
+  }
+
+  private showSubmitState(): void {
+    this.submitButton.setDisabled(!this.isValid());
+  }
+
+  private isValid(): boolean {
+    return this.entries.every((entry) => this.getError(entry) === NO_ERROR);
+  }
+
+  private getError(entry: FieldEntry): string {
+    return getFieldError(
+      entry.rule,
+      entry.input.getValue(),
+      this.getPassword()
+    );
+  }
+
+  private getPassword(): string {
+    const passwordEntry = this.entries.find((item) => item.rule === 'password');
+
+    if (!passwordEntry) {
+      return NO_ERROR;
+    }
+
+    return passwordEntry.input.getValue();
   }
 }
 
